@@ -3,11 +3,6 @@
 #' to estimate the amount of damage sustained by each brain region.
 #' @param cfg a pre-made cfg structure (as list object).
 #' @param saveout is a logical value that indicates whether the user would like to save output files to cfg$out_path
-#' @param parallel is a logical value that indicates whether the user's computer
-#' is Linux or Unix (i.e. macOS), and should run the code in parallel.
-#' @param cores if parallel = TRUE, cores is an integer value that indicates how many cores
-#' the function should be run on.
-#' @param pb is a logical value that indicates whether or not a progress bar will be shown during analysis.
 #'
 #' @importFrom neurobase readnii writenii
 #'
@@ -15,11 +10,8 @@
 #' 1) damage.map (a nifti image in which voxel values correspond to the % of the associated parcel damaged by lesion),
 #' and 2) damage.vec (a vector with % damage values for each parcel in the brain parcellation).
 #' @examples \dontrun{
-#' mmdt.obj = get.mmdt.obj(masks = masks, modal1 = t1s, modal2 = flairs,
-#'                         ids = ids, groups = groups)
 #'
-#' mmdt.results = mmdt(mmdt.obj, mc.adjust = c("BH", "maxt"), nperm = 500,
-#'                     parallel = TRUE, cores = 4, pb = TRUE)}
+#' }
 #' @export
 
 get_parcel_damage<-function(cfg,saveout=TRUE,parallel=TRUE,cores=2,pb=TRUE){
