@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# mmdt <img src="brain.gif" height="150px" width="150px" align="right" />
+# mmdt <img src="icon256.png" height="150px" width="150px" align="right" />
 
 `mmdt` is an R package for conducting the multi-modal density test,
 based on the paper [“A local group differences test for subject-level
