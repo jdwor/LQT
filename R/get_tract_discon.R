@@ -1,6 +1,6 @@
-#' @title Get parcel damage
-#' @description % This function uses an MNI-registered lesion file and an MNI-registered brain parcellation
-#' to estimate the amount of damage sustained by each brain region.
+#' @title Get tract-based disconnection
+#' @description This function computes tract-based disconnection measures using an MNI-registered lesion and the tract segmentations
+#' obtained from the curated HCP-842 tractography atlas as described in Yeh et al., (2018 - NeuroImage).
 #' @param cfg a pre-made cfg structure (as list object).
 #' @param saveout is a logical value that indicates whether the user would like to save output files to cfg$out_path
 #'
