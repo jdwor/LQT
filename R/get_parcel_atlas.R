@@ -2,20 +2,22 @@
 #' @description This function computes parcel-based direct structural connectivity measures using an MNI-registered
 #' brain parcellation and the curated HCP-842 structural connectome template described in Yeh et al., (2018 - NeuroImage)
 #' @param cfg a pre-made cfg structure (as list object).
-#' @param saveout is a logical value that indicates whether the user would like to save output files to cfg$out_path
 #'
-#' @importFrom neurobase readnii writenii
 #' @importFrom R.matlab readMat
 #'
-#' @return A data.frame giving the percent of streamlines in each tract that were disconnected by the lesions (column "Discon")
-#' and the associated tract names (column "Tract").
+#' @return A .trk.gz file containing all the streamlines in the atlas (redundant with all_tracts_1mm.nii.gz);
+#' an .RData file with the suffix .connectivity.RData, which contains both the structural connection matrix (connectivity) and parcel names (name);
+#' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
+#' a .txt file with the suffix .connectogram.txt, which contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);
+#' a .tdi.nii.gz file named the same way as the .trk.gz file, which contains a nifti image with track density imaging (TDI) values at each voxel. It is essentially a way of converting the .trk.gz file into voxel space. Higher values indicate higher streamline densities at each voxel.
+#'
 #' @examples \dontrun{
 #'
 #' }
 #' @export
 
-get_parcel_atlas<-function(cfg,saveout=TRUE){
-  at.path=paste0(cfg$source_path,"/Atlas")
+get_parcel_atlas<-function(cfg){
+  at.path=paste0(cfg$out_path,"/Atlas")
   if(!dir.exists(at.path)){
     dir.create(at.path)
   }
@@ -25,6 +27,22 @@ get_parcel_atlas<-function(cfg,saveout=TRUE){
   system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz",
                 " --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --output=',out_file,' --connectivity=',cfg$parcel_path,
                 ' --connectivity_type=',cfg$con_type,' --connectivity_threshold=0 --export=tdi'))
+
+  matfile=paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.mat$"))
+  mat=readMat(matfile)
+  connectivity=mat$connectivity
+  name=strsplit(intToUtf8(mat$name),"\n")[[1]]
+  atlas=mat$atlas
+  file.remove(matfile); rm(mat)
+
+  netfile=paste0(at.path,"/",list.files(at.path,pattern="network_measures\\.txt$"))
+  global=read.table(netfile,sep="\t")[1:27,]
+  colnames(global)=c("Measure","Value")
+  local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
+  colnames(local)[1]="Measure"
+
+  save(global,local,file=gsub("\\.txt","\\.RData",netfile))
+  save(connectivity,name,atlas,file=gsub("\\.mat","\\.RData",matfile))
 
   cat('Finished creating atlas files')
 }
