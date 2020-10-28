@@ -1,32 +1,32 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# mmdt <img src="icon256.png" height="150px" width="150px" align="right" />
+# Lesion Quantification Toolkit (LQT) <img src="icon256.png" height="150px" width="150px" align="right" />
 
-`mmdt` is an R package for conducting the multi-modal density test,
-based on the paper [“A local group differences test for subject-level
-multivariate density neuroimaging
-outcomes”](http://dx.doi.org/10.1093/biostatistics/kxz058) by Dworkin
-et al. published in *Biostatistics*. This package creates data
-structures necessary for applying the method to imaging data, then
-allows the user to perform the analyses, summarize the results, and
-create figures for visualization.
+`LQT` is an R implementation of the lesion quantification toolkit, based
+on the paper [“Lesion Quantification Toolkit: A MATLAB software tool for
+estimating grey matter damage and white matter disconnections in
+patients with focal brain
+lesions”](https://www.biorxiv.org/content/10.1101/2020.07.28.225771v1)
+by Griffis et al. This package creates data structures necessary for
+applying the method to imaging data, then allows the user to perform the
+analyses, summarize the results, and create figures for visualization.
 
 ## Installation
 
 To get the latest development version from GitHub:
 
 ``` r
-devtools::install_github('jdwor/mmdt')
+devtools::install_github('jdwor/LQT')
 ```
 
 [![Build
-Status](https://travis-ci.com/jdwor/mmdt.svg?token=rLYL5VRxjrkzYHqLNKBX&branch=master)](https://travis-ci.com/jdwor/mmdt)
+Status](https://travis-ci.com/jdwor/LQT.svg?token=rLYL5VRxjrkzYHqLNKBX&branch=master)](https://travis-ci.com/jdwor/LQT)
 
 ## Functions
 
 Below is a list of the functions and a description of options available
-to utilize through the `mmdt` package. An example of how to run the
+to utilize through the `LQT` package. An example of how to run the
 analysis from beginning to end is given below, in the “Vignette”
 section.
 

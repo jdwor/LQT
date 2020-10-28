@@ -12,14 +12,14 @@ output: github_document
 To get the latest development version from GitHub:
 
 ```{r, eval = FALSE}
-devtools::install_github('jdwor/mmdt')
+devtools::install_github('jdwor/LQT')
 ```
 
-[![Build Status](https://travis-ci.com/jdwor/mmdt.svg?token=rLYL5VRxjrkzYHqLNKBX&branch=master)](https://travis-ci.com/jdwor/mmdt)
+[![Build Status](https://travis-ci.com/jdwor/LQT.svg?token=rLYL5VRxjrkzYHqLNKBX&branch=master)](https://travis-ci.com/jdwor/LQT)
 
 ## Functions
 
-Below is a list of the functions and a description of options available to utilize through the `mmdt` package. An example of how to run the analysis from beginning to end is given below, in the "Vignette" section.
+Below is a list of the functions and a description of options available to utilize through the `LQT` package. An example of how to run the analysis from beginning to end is given below, in the "Vignette" section.
 
 ### get.mmdt.obj
 
