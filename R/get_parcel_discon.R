@@ -44,11 +44,13 @@ get_parcel_discon<-function(cfg){
 
   out_file = paste0(pd.path,cfg$pat_id,"_",cfg$file_suffix,'.trk.gz')
 
+  # create disconnection matrix, .trk fle, and TDI map
   system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz",
                 " --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz'," --roi=",cfg$lesion_path,
                 ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
                 cfg$con_type,' --connectivity_threshold=0 --export=tdi'))
 
+  # resave connectivity file (raw streamline counts)
   matfile=paste0(pd.path,"/",list.files(pd.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)
   connectivity=mat$connectivity
@@ -56,6 +58,7 @@ get_parcel_discon<-function(cfg){
   atlas=mat$atlas
   file.remove(matfile); rm(mat)
 
+  # resave network measures file (raw streamline counts)
   netfile=paste0(pd.path,"/",list.files(pd.path,pattern="network_measures\\.txt$"))
   global=read.table(netfile,sep="\t")[1:27,]
   colnames(global)=c("Measure","Value")
@@ -65,9 +68,14 @@ get_parcel_discon<-function(cfg){
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
   save(connectivity,name,atlas,file=gsub("\\.mat","\\.RData",matfile))
 
+  # load atlas SC matrix
   pat_con=connectivity; rm(connectivity)
+  load(paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.RData")))
+  atlas_con=connectivity; rm(connectivity)
 
-
+  # convert patient matrix to % disconnection and save
+  pct_sdc_matrix = 100*(pat_con/atlas_con)
+  pct_sdc_matrix[is.na(pct_sdc_matrix)]=0
 
 
   cat('Finished creating atlas files')
