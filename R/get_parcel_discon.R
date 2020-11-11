@@ -4,13 +4,14 @@
 #' @param cfg a pre-made cfg structure (as list object).
 #'
 #' @importFrom R.matlab readMat
+#' @importFrom neurobase readnii writenii
+#' @importFrom fslr fslsmooth
 #'
 #' @return A .trk.gz file. This contains all of the streamlines that intersected the lesion and can be viewed using e.g. DSI_Studio;
 #' an .RData file with the suffix .connectivity.RData. This contains both the structural disconnection matrix (connectivity) and parcel names (name);
 #' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
-#' a .txt file with the suffix .connectogram.txt. This file contains a connectomgram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);
-#' a .mat file with the suffix _percent_parcel_SDC.mat. This file contains a disconnection adjacency matrix where each cell quantifies the % disconnection for each edge in the SC atlas;
-#' a .mat file with the suffix _percent_parcel_spared_SC.mat. This file contains a spared connection adjacency matrix where each cell quantifies the % of each connection spared by the lesion for each edge in the SC atlas (i.e. it is equal to the difference between the Atlas SC matrix and the percent SDC matrix);
+#' an .RData file with the suffix _percent_parcel_mats.RData. This file contains a disconnection adjacency matrix (pct_sdc_matrix) and a spared connection adjacency matrix (pct_spared_sc_matrix);
+#' a .txt file with the suffix .connectogram.txt. This file contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);
 #' a .node file with the suffix _percent_parcel_SDC.node. This file contains the node information for external connectome viewers (e.g. MRIcroGL). Node sizes are proportional to the number of affected connections. Node colors can be pre-assigned in the .cfg file (cfg.node_color), but if not, they will be proportional to the amount of disconnection sustained analogous to node size;
 #' a .edge file with the suffix _percent_parcel_SDC.edge. This file contains the percent SDC matrix in a format that can be loaded into external viewers (e.g. MRICroGL);
 #' a .node file with the suffix _percent_parcel_spared_SC.node. This is analogous to (7), but for the spared SC matrix;
@@ -76,7 +77,90 @@ get_parcel_discon<-function(cfg){
   # convert patient matrix to % disconnection and save
   pct_sdc_matrix = 100*(pat_con/atlas_con)
   pct_sdc_matrix[is.na(pct_sdc_matrix)]=0
+  pct_spared_sc_matrix = 100*((atlas_con-pat_con)/atlas_con)
+  pct_spared_sc_matrix[is.na(pct_spared_sc_matrix)]=0
+  pct_spared_sc_matrix[is.infinite(pct_spared_sc_matrix)]=0
 
+  fname=paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_parcel_mats.RData")
+  save(pct_sdc_matrix, pct_spared_sc_matrix, file=fname)
 
-  cat('Finished creating atlas files')
+  ### output .node and .edge files for external viewers (e.g. MRIcroGL)
+
+  # get parcel coordinates if not supplied
+  if(length(cfg$parcel_coords)==0){
+    cat('Warning: Parcel coordinates not provided, attempting to estimate coordinates from parcellation image\n');
+    cfg$parcel_coords = util_get_coords(cfg)
+  }
+  NodePos = cfg$parcel_coords
+
+  # write out .edge files
+  write(round(t(pct_sdc_matrix),4),
+        paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
+               "_percent_parcel_SDC.edge"),sep="\t")
+  write(round(t(pct_spared_sc_matrix),4),
+        paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
+               "_percent_parcel_spaced_SC.edge"),sep="\t")
+
+  # write out .node files
+  NodeSize = apply(pct_sdc_matrix,2,sum)/apply((atlas_con>0)*100,2,sum) # size nodes according to % maximum # of affected connections
+  NodeSize[is.na(NodeSize)]=0
+  NodeSize2 = apply(pct_spared_sc_matrix,2,sum)/apply((atlas_con>0)*100,2,sum)
+  NodeSize2[is.na(NodeSize2)]=0
+  if(length(cfg$node_color)==0){
+    NodeColor = NodeSize
+  }else if(length(cfg$node_color)!=length(NodeSize)){
+    NodeColor = NodeSize
+  }else{
+    NodeColor = cfg$node_color
+  }
+  if(length(cfg$node_label)==0){
+    NodeLabel = as.character(1:nrow(pct_sdc_matrix))
+  }else if(length(cfg$node_label)!=length(NodeSize)){
+    NodeLabel = as.character(1:nrow(pct_sdc_matrix))
+  }else{
+    NodeLabel = cfg$node_label
+  }
+
+  # construct output filename and save
+  OutputFile = paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_parcel_SDC.node")
+  C = cbind(NodePos, NodeColor, NodeSize, NodeLabel)
+  write(t(C), OutputFile, sep="\t")
+
+  OutputFile = paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_parcel_spared_SC.node")
+  C = cbind(NodePos, NodeColor, NodeSize2, NodeLabel)
+  write(t(C), OutputFile, sep="\t")
+
+  ### Save TDI map
+  # convert TDI to % disconnection
+  con_file = list.files(pd.path, pattern="\\.tdi\\.nii\\.gz$")
+  pat_con = readnii(paste0(pd.path,"/",con_file))
+
+  atlas_file = list.files(at.path, pattern="\\.tdi\\.nii\\.gz$")
+  atlas_con = readnii(paste0(at.path,"/",atlas_file))
+
+  writenii(pat_con, paste0(dm.path,"/",con_file))
+
+  pat_con = 100*(pat_con/atlas_con)
+  pat_con@datatype = 16
+  support = substr(cfg$source_path,1,nchar(cfg$source_path)-18)
+  qa = readnii(paste0(support,'HCP842_QA.nii'))
+
+  pat_con[is.na(pat_con)]=0
+  pat_con[qa==0]=0
+  pat_con[pat_con < 1] = 0
+
+  if(length(cfg$smooth)>0){
+    if(cfg$smooth>0){
+      pat_con = fslsmooth(pat_con,sigma=cfg.smooth,retimg=T)
+      pat_con[pat_con < 0.01] = 0
+    }
+  }
+
+  writenii(pat_con, paste0(dm.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_tdi.nii.gz"))
+
+  trk_file = list.files(pd.path, pattern="\\.trk\\.gz$")
+  file.remove(paste0(pd.path,"/",con_file))
+  file.remove(paste0(pd.path,"/",trk_file))
+
+  cat('Finished computing patient disconnection measures.\n');
 }
