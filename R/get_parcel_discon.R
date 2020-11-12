@@ -17,7 +17,7 @@
 #' a .node file with the suffix _percent_parcel_spared_SC.node. This is analogous to (7), but for the spared SC matrix;
 #' a .edge file with the suffix _percent_parcel_spared_SC.edge. This is analogous to (8), but for the spared SC matrix;
 #' a .tdi.nii.gz file named the same way as the .trk.gz file. This contains a nifti image volume with track density imaging (TDI) values from the .trk.gz file at each voxel. It is essentially a way of converting the .trk.gz file into voxel space. Higher values indicate higher streamline densities at each grid element (voxel);
-#' a .nii file with the suffix _percent_tdi.nii. For each voxel, values correspond the % reduction in streamline density relative to the atlas when accounting for the effects of the lesion.
+#' a .nii file with the suffix _percent_tdi.nii.gz. For each voxel, values correspond the % reduction in streamline density relative to the atlas when accounting for the effects of the lesion.
 
 #'
 #' @examples \dontrun{
@@ -87,7 +87,7 @@ get_parcel_discon<-function(cfg){
   ### output .node and .edge files for external viewers (e.g. MRIcroGL)
 
   # get parcel coordinates if not supplied
-  if(length(cfg$parcel_coords)==0){
+  if(is.null(cfg$parcel_coords)){
     cat('Warning: Parcel coordinates not provided, attempting to estimate coordinates from parcellation image\n');
     cfg$parcel_coords = util_get_coords(cfg)
   }
@@ -102,18 +102,18 @@ get_parcel_discon<-function(cfg){
                "_percent_parcel_spaced_SC.edge"),sep="\t")
 
   # write out .node files
-  NodeSize = apply(pct_sdc_matrix,2,sum)/apply((atlas_con>0)*100,2,sum) # size nodes according to % maximum # of affected connections
+  NodeSize = apply(pct_sdc_matrix,2,sum,na.rm=T)/apply((atlas_con>0)*100,2,sum,na.rm=T) # size nodes according to % maximum # of affected connections
   NodeSize[is.na(NodeSize)]=0
-  NodeSize2 = apply(pct_spared_sc_matrix,2,sum)/apply((atlas_con>0)*100,2,sum)
+  NodeSize2 = apply(pct_spared_sc_matrix,2,sum,na.rm=T)/apply((atlas_con>0)*100,2,sum,na.rm=T)
   NodeSize2[is.na(NodeSize2)]=0
-  if(length(cfg$node_color)==0){
+  if(is.null(cfg$node_color)){
     NodeColor = NodeSize
   }else if(length(cfg$node_color)!=length(NodeSize)){
     NodeColor = NodeSize
   }else{
     NodeColor = cfg$node_color
   }
-  if(length(cfg$node_label)==0){
+  if(is.null(cfg$node_label)){
     NodeLabel = as.character(1:nrow(pct_sdc_matrix))
   }else if(length(cfg$node_label)!=length(NodeSize)){
     NodeLabel = as.character(1:nrow(pct_sdc_matrix))
@@ -149,7 +149,7 @@ get_parcel_discon<-function(cfg){
   pat_con[qa==0]=0
   pat_con[pat_con < 1] = 0
 
-  if(length(cfg$smooth)>0){
+  if(!is.null(cfg$smooth)){
     if(cfg$smooth>0){
       pat_con = fslsmooth(pat_con,sigma=cfg.smooth,retimg=T)
       pat_con[pat_con < 0.01] = 0
@@ -160,7 +160,7 @@ get_parcel_discon<-function(cfg){
 
   trk_file = list.files(pd.path, pattern="\\.trk\\.gz$")
   file.remove(paste0(pd.path,"/",con_file))
-  file.remove(paste0(pd.path,"/",trk_file))
+  #file.remove(paste0(pd.path,"/",trk_file))
 
   cat('Finished computing patient disconnection measures.\n');
 }

@@ -4,7 +4,6 @@
 #' run get_parcel_atlas to obtain the atlas SC matrix.
 #' @param cfg a pre-made cfg structure (as list object).
 #'
-#' @importFrom R.matlab readMat
 #' @importFrom igraph distances graph_from_adjacency_matrix
 #'
 #' @return An .RData file with the suffix _sspl_matrix.RData, which contains the raw SSPL
@@ -28,10 +27,10 @@ get_atlas_sspl<-function(cfg){
   graph = graph_from_adjacency_matrix(connectivity,mode="undirected")
   sspl_matrix = distances(graph,v=V(graph),to=V(graph)) # SSPL for end atlas
   diag(sspl_matrix)=NA # set diagonal to NA
-  sspl_matrix[is.infinite(sspl_matrix)] = NA; # set any Inf values to NA
+  sspl_matrix[is.infinite(sspl_matrix)] = NA # set any Inf values to NA
 
   out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'_SSPL_matrix.RData')
-  save(sspl_matrix,file=out_file);
+  save(sspl_matrix,file=out_file)
 
   cat('Finished calculating atlas SSPL')
 }
