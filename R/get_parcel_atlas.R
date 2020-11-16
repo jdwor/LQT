@@ -5,8 +5,7 @@
 #'
 #' @importFrom R.matlab readMat
 #'
-#' @return A .trk.gz file containing all the streamlines in the atlas (redundant with all_tracts_1mm.nii.gz);
-#' an .RData file with the suffix .connectivity.RData, which contains both the structural connection matrix (connectivity) and parcel names (name);
+#' @return An .RData file with the suffix .connectivity.RData, which contains both the structural connection matrix (connectivity) and parcel names (name);
 #' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
 #' a .txt file with the suffix .connectogram.txt, which contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);
 #' a .tdi.nii.gz file named the same way as the .trk.gz file, which contains a nifti image with track density imaging (TDI) values at each voxel. It is essentially a way of converting the .trk.gz file into voxel space. Higher values indicate higher streamline densities at each voxel.
@@ -22,11 +21,11 @@ get_parcel_atlas<-function(cfg){
     dir.create(at.path)
   }
 
-  out_file = paste0(at.path,'atlas_',cfg$file_suffix,'.trk.gz')
+  out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'.trk.gz')
 
-  system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz",
-                " --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --output=',out_file,' --connectivity=',cfg$parcel_path,
-                ' --connectivity_type=',cfg$con_type,' --connectivity_threshold=0 --export=tdi'))
+  out=suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --output=',out_file,' --connectivity=',cfg$parcel_path,
+                ' --connectivity_type=',cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
 
   matfile=paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)
@@ -40,6 +39,7 @@ get_parcel_atlas<-function(cfg){
   colnames(global)=c("Measure","Value")
   local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
   colnames(local)[1]="Measure"
+  file.remove(netfile)
 
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
   save(connectivity,name,atlas,file=gsub("\\.mat","\\.RData",matfile))

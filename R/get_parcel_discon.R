@@ -43,13 +43,13 @@ get_parcel_discon<-function(cfg){
     dir.create(dm.path)
   }
 
-  out_file = paste0(pd.path,cfg$pat_id,"_",cfg$file_suffix,'.trk.gz')
+  out_file = paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,'.trk.gz')
 
   # create disconnection matrix, .trk fle, and TDI map
-  system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz",
-                " --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz'," --roi=",cfg$lesion_path,
+  out=suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
                 ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
-                cfg$con_type,' --connectivity_threshold=0 --export=tdi'))
+                cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
 
   # resave connectivity file (raw streamline counts)
   matfile=paste0(pd.path,"/",list.files(pd.path,pattern="connectivity\\.mat$"))
@@ -65,6 +65,7 @@ get_parcel_discon<-function(cfg){
   colnames(global)=c("Measure","Value")
   local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
   colnames(local)[1]="Measure"
+  file.remove(netfile)
 
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
   save(connectivity,name,atlas,file=gsub("\\.mat","\\.RData",matfile))
@@ -143,7 +144,7 @@ get_parcel_discon<-function(cfg){
   pat_con = 100*(pat_con/atlas_con)
   pat_con@datatype = 16
   support = substr(cfg$source_path,1,nchar(cfg$source_path)-18)
-  qa = readnii(paste0(support,'HCP842_QA.nii'))
+  qa = readnii(paste0(support,'HCP842_QA.nii.gz'))
 
   pat_con[is.na(pat_con)]=0
   pat_con[qa==0]=0
@@ -151,7 +152,7 @@ get_parcel_discon<-function(cfg){
 
   if(!is.null(cfg$smooth)){
     if(cfg$smooth>0){
-      pat_con = fslsmooth(pat_con,sigma=cfg.smooth,retimg=T)
+      pat_con = fslsmooth(pat_con,sigma=cfg$smooth,retimg=T,verbose=F)
       pat_con[pat_con < 0.01] = 0
     }
   }
@@ -159,8 +160,8 @@ get_parcel_discon<-function(cfg){
   writenii(pat_con, paste0(dm.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_tdi.nii.gz"))
 
   trk_file = list.files(pd.path, pattern="\\.trk\\.gz$")
+  if(length(trk_file)>0){file.remove(paste0(pd.path,"/",trk_file))}
   file.remove(paste0(pd.path,"/",con_file))
-  #file.remove(paste0(pd.path,"/",trk_file))
 
   cat('Finished computing patient disconnection measures.\n');
 }

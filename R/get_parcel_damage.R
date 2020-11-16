@@ -2,7 +2,6 @@
 #' @description This function uses an MNI-registered lesion file and an MNI-registered brain parcellation
 #' to estimate the amount of damage sustained by each brain region.
 #' @param cfg a pre-made cfg structure (as list object).
-#' @param saveout is a logical value that indicates whether the user would like to save output files to cfg$out_path
 #'
 #' @importFrom neurobase readnii writenii
 #'
@@ -14,17 +13,17 @@
 #' }
 #' @export
 
-get_parcel_damage<-function(cfg,saveout=TRUE,parallel=TRUE,cores=2,pb=TRUE){
+get_parcel_damage<-function(cfg){
 
   lesions = readnii(cfg$lesion_path)
   parcels = readnii(cfg$parcel_path)
 
   # Check if lesion and parcels are the same dimensions
-  if(!identical(dim(lesion.img),dim(parcels.img))){
+  if(!identical(dim(lesions),dim(parcels))){
     stop('Lesion and parcel volumes have different dimensions. Please make sure that both volumes are in the same space and have identical dimensions.')
   }
   else{
-    cat('Lesion and parcel volumes have identical dimensions; computing parcel damage measures.')
+    cat('Computing parcel damage measures.\n')
   }
 
   # Get parcel damage measures
@@ -35,7 +34,7 @@ get_parcel_damage<-function(cfg,saveout=TRUE,parallel=TRUE,cores=2,pb=TRUE){
   for(i in 1:num_parcels){
     # loop through parcels
 
-    cat('Progress:',i,'of',num_parcels,'parcels evaluated\n')
+    cat('Progress:',i,'of',num_parcels,'parcels evaluated\r')
     pcd_vect[i] = mean(lesions[parcels==i])*100 # get percent of parcel damaged
     pcd_vol[parcels==i] = pcd_vect[i] # put into volume
   }
@@ -44,26 +43,23 @@ get_parcel_damage<-function(cfg,saveout=TRUE,parallel=TRUE,cores=2,pb=TRUE){
 
   # save parcel damage measures
 
-  if(saveout==T){
-    pat.path=paste0(cfg$out_path,"/",cfg$pat_id)
-    if(!dir.exists(cfg$out_path)){
-      dir.create(cfg$out_path)
-    }
-    if(!dir.exists(pat.path)){
-      dir.create(pat.path)
-    }
-
-    pd.path=paste0(pat.path,"/Parcel_Damage")
-    if(!dir.exists(pd.path)){
-      dir.create(pd.path)
-    }
-
-    writenii(lesion, paste0(pat.path,"/",cfg$pat_id,"_lesion.nii.gz"))
-    writenii(pcd_vol, paste0(pat.path,"/",cfg$pat_id,"_",
-                             cfg$file_suffix,"_percent_damage.nii.gz"))
-    write.csv(pcd_vect,paste0(pat.path,"/",cfg$pat_id,"_",
-                              cfg$file_suffix,"_percent_damage.csv"))
+  pat.path=paste0(cfg$out_path,"/",cfg$pat_id)
+  if(!dir.exists(cfg$out_path)){
+    dir.create(cfg$out_path)
+  }
+  if(!dir.exists(pat.path)){
+    dir.create(pat.path)
   }
 
-  return(list(damage.map=pcd_vol, damage.vec=pcd_vect))
+  pd.path=paste0(pat.path,"/Parcel_Damage")
+  if(!dir.exists(pd.path)){
+    dir.create(pd.path)
+  }
+
+  writenii(lesions, paste0(pat.path,"/",cfg$pat_id,"_lesion.nii.gz"))
+  writenii(pcd_vol, paste0(pd.path,"/",cfg$pat_id,"_",
+                           cfg$file_suffix,"_percent_damage.nii.gz"))
+  write.csv(pcd_vect,paste0(pd.path,"/",cfg$pat_id,"_",
+                            cfg$file_suffix,"_percent_damage.csv"))
+
 }

@@ -2,7 +2,6 @@
 #' @description This function computes tract-based disconnection measures using an MNI-registered lesion and the tract segmentations
 #' obtained from the curated HCP-842 tractography atlas as described in Yeh et al., (2018 - NeuroImage).
 #' @param cfg a pre-made cfg structure (as list object).
-#' @param saveout is a logical value that indicates whether the user would like to save output files to cfg$out_path
 #'
 #' @importFrom neurobase readnii writenii
 #' @importFrom R.matlab readMat
@@ -14,7 +13,7 @@
 #' }
 #' @export
 
-get_tract_discon<-function(cfg,saveout=TRUE){
+get_tract_discon<-function(cfg){
   tract_path = paste0(cfg$source_path,"/All_Tracts")
   my_tracts = list.files(tract_path, pattern="\\.trk\\.gz$")
 
@@ -31,26 +30,35 @@ get_tract_discon<-function(cfg,saveout=TRUE){
     dir.create(td.path)
   }
 
-  for(i in 1:length(my_tracts)){
+  cat('Computing tract disconnection.\n')
+
+  num_tracts=length(my_tracts)
+  for(i in 1:num_tracts){
     # output file name
     tract_name = substr(my_tracts[i],1,nchar(my_tracts[i])-7)
     out_file = paste0(td.path,"/",my_tracts[i])
 
     # compute tract disconnection
-    system(paste0("! ",cfg$dsi_path,' --action=ana --source=',cfg$source_path,"/HCP842_1mm.fib.gz",
+    out=suppressWarnings(system(paste0("! ",cfg$dsi_path,' --action=ana --source=',cfg$source_path,"/HCP842_1mm.fib.gz",
                   " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
-                  " --output=",out_file," --export=stat"))
+                  " --output=",out_file," --export=stat"),intern=T))
 
     # Create empty text file if it does not exist (necessary because some versions of DSI_Studio don't output anything for null results)
     if(!file.exists(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))){
       fileConn<-file(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))
       writeLines("number of tracts\t0", fileConn)
       close(fileConn)
+    }else if(file.info(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))$size==0){
+      fileConn<-file(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))
+      writeLines("number of tracts\t0", fileConn)
+      close(fileConn)
     }
+
+    cat('Progress:',i,'of',num_tracts,'tracts evaluated\r')
   }
 
   to_remove=list.files(td.path, pattern="\\.trk\\.gz$")
-  file.remove(paste0(td.path,"/",to.remove))
+  if(length(to_remove)>0){file.remove(paste0(td.path,"/",to_remove))}
 
   my_stats=list.files(td.path, pattern="\\.txt$")
 
@@ -64,13 +72,9 @@ get_tract_discon<-function(cfg,saveout=TRUE){
   }
 
   to_remove=list.files(td.path, pattern="\\.txt$")
-  file.remove(paste0(td.path,"/",to.remove))
+  file.remove(paste0(td.path,"/",to_remove))
 
-  tract_names = readMat(paste0(tract_path,"/","tract_names.mat"))
-  tract_names = as.character(unlist(tract_names))
-  tract_counts = readMat(paste0(tract_path,"/","tract_counts.mat"))
-  tract_counts = as.numeric(unlist(tract_counts))
-
+  load(paste0(tract_path,"/","tract_info.RData"))
   if(identical(tract_names,tract_name)){
     tract_discon = tract_discon/tract_counts
   }else{
@@ -78,13 +82,9 @@ get_tract_discon<-function(cfg,saveout=TRUE){
     tract_discon = 100*(tract_discon/tract_counts[tc_index])
   }
 
+  output = data.frame(Tract = tract_name, Discon = tract_discon)
+  write.csv(output,paste0(td.path,cfg$pat_id,"_percent_discon_tracts.csv"))
+
   cat("Finished computing patient disconnection measures.")
 
-  output = data.frame(Tract = tract_name, Discon = tract_discon)
-
-  if(saveout==T){
-    write.csv(output,paste0(td.path,cfg$pat_id,"_percent_discon_tracts.csv"))
-  }
-
-  return(output)
 }

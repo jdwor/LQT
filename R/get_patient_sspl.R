@@ -39,10 +39,10 @@ get_patient_sspl<-function(cfg){
     stop('Patient Parcel Disconnection folder does not exist; cannot compute changes in SSPLs until patient SSPL matrix has been created. Please create patient SSPL matrix and retry.');
   }
 
-  load(paste0(pd.path,cfg$pat_id,'_',cfg$file_suffix,'_percent_parcel_mats.RData'))
+  load(paste0(pd.path,"/",cfg$pat_id,'_',cfg$file_suffix,'_percent_parcel_mats.RData'))
 
   ps.path=paste0(pat.path,"/Parcel_SSPL")
-  if(!dir.exists(pat.path)){
+  if(!dir.exists(ps.path)){
     dir.create(ps.path)
   }
 
