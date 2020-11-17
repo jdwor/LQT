@@ -17,7 +17,7 @@ cfg$source_path = '/Users/jordandworkin/LQT/inst/extdata/Tractography_Atlas'
 # Path to output directory (patient and atlas result directories will be created within the output directory)
 cfg$out_path = '/Users/jordandworkin/Desktop/TestLes'
 # Path to lesion (pre-registered to MNI template)
-cfg$lesion_path = '/Users/jordandworkin/Desktop/MSles/gold_stand_les.nii.gz'
+cfg$lesion_path = '/Users/jordandworkin/LQT/inst/extdata/Example_Lesions/ExampleLesion1.nii.gz'
 # Path to parcellation (should have identical dimensions to lesion and be in MNI template space)
 cfg$parcel_path = '/Users/jordandworkin/LQT/inst/extdata/Schaefer_Yeo_Plus_Subcort/100Parcels7Networks.nii.gz'
 

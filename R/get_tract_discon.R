@@ -67,7 +67,7 @@ get_tract_discon<-function(cfg){
   for(i in 1:length(my_stats)){
     fid=read.table(paste0(td.path,"/",my_stats[i]),sep="\t")
 
-    tract_name[i] = substr(my_stats[i],1,nchar(my_tracts[i])-16)
+    tract_name[i] = substr(my_stats[i],1,nchar(my_stats[i])-16)
     tract_discon[i] = fid$V2[1]
   }
 
@@ -83,7 +83,7 @@ get_tract_discon<-function(cfg){
   }
 
   output = data.frame(Tract = tract_name, Discon = tract_discon)
-  write.csv(output,paste0(td.path,cfg$pat_id,"_percent_discon_tracts.csv"))
+  write.csv(output,paste0(td.path,"/",cfg$pat_id,"_percent_discon_tracts.csv"))
 
   cat("Finished computing patient disconnection measures.")
 
