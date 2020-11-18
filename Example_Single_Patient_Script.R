@@ -1,18 +1,10 @@
 ## Example single patient script
+library(LQT)
 
 ########### Set up cfg structure ###########
-cfg=list()
-files=list.files('/Users/jordandworkin/LQT/R')
-for(i in files[-c(1:2)]){
-  source(paste0('/Users/jordandworkin/LQT/R/',i))
-}
-library(fslr);library(R.matlab)
-library(neurobase);library(igraph)
-
-#### Create cfg object ####
 pat_id = "Subject1"
-out_path = '~/Desktop/TestLes'
-lesion_path = '~/LQT/inst/extdata/Example_Lesions/ExampleLesion1.nii.gz'
+out_path = '/Users/jordandworkin/Desktop/TestLes'
+lesion_path = '/Users/jordandworkin/LQT/inst/extdata/Example_Lesions/ExampleLesion1.nii.gz'
 
 cfg = create_cfg_object(pat_id=pat_id,out_path=out_path,
                         lesion_path=lesion_path)

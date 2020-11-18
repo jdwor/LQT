@@ -30,5 +30,5 @@ get_atlas_sspl<-function(cfg){
   out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'_SSPL_matrix.RData')
   save(sspl_matrix,file=out_file)
 
-  cat('Finished calculating atlas SSPL')
+  cat('Finished calculating atlas SSPL.\n')
 }

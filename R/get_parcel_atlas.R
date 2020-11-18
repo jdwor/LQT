@@ -42,5 +42,5 @@ get_parcel_atlas<-function(cfg){
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
   save(connectivity,name,atlas,file=gsub("\\.mat","\\.RData",matfile))
 
-  cat('Finished creating atlas files')
+  cat('Finished creating atlas files.\n')
 }
