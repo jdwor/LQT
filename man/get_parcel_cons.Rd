@@ -13,8 +13,3 @@ get_parcel_cons(cfg)
 This is a wrapper function that calls a series of functions to create various parcel disconnection measures.
 It wraps the 'get_parcel_atlas', 'get_atlas_sspl', 'get_parcel_discon', and 'get_patient_sspl' functions.
 }
-\examples{
-\dontrun{
-
-}
-}

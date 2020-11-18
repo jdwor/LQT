@@ -18,8 +18,3 @@ and 2) damage.vec (a vector with % damage values for each parcel in the brain pa
 This function uses an MNI-registered lesion file and an MNI-registered brain parcellation
 to estimate the amount of damage sustained by each brain region.
 }
-\examples{
-\dontrun{
-
-}
-}

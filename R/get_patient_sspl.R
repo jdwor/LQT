@@ -14,9 +14,6 @@
 #' Note that if the lesion leads to the SSPL between a region pair to be undefined (i.e. = Inf), then this value is replaced
 #' by a value equal to 1 plus the maximum non-Inf value in the atlas SSPL matrix.
 #'
-#' @examples \dontrun{
-#'
-#' }
 #' @export
 
 get_patient_sspl<-function(cfg){

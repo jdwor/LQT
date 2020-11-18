@@ -10,21 +10,19 @@
 #' @param con_type connectivity type (must be either 'end' or 'pass'): if 'end', connections are defined based on streamline endpoints;
 #' if 'pass', they are based on streamline pass-throughs ('end' is more conservative and is recommended)
 #' @param sspl_spared_thresh a number between 1 and 100 representing the percent spared threshold for computing shortest structural path lengths
-#' (e.g. 100 means that only fully spared regions will be included in SSPL calculation, 1 means that regions with at least 1% spared will be included; default is 50)
+#' (e.g. 100 means that only fully spared regions will be included in SSPL calculation, 1 means that regions with at least 1 percent spared will be included; default is 50)
 #' @param node_label a vector of strings corresponding to node labels (i.e. parcel names); must be the same length (P) as the number of parcels
 #' @param node_color a vector of integer values corresponding to e.g. network assignments or partitions (used to color nodes in visualizations)
 #' @param parcel_coords a P-by-3 matrix of parcel coordinates used for brain network graphs; if not supplied, they will be estimated from the parcel file
 #' @param delta_sspl_thresh a number between 1 and 100 giving the percentile threshold for displaying SSPL increases in figures (will only display SSPL increases above percentile threshold; default = 90)
-#' @param parcel_dmg_thresh a number between 1 and 100 giving the parcel damage threshold for displaying SSPL increases in figures (will not display SSPL increases for parcels with % damage greater than or equal to the threshold; default = 100)
-#' @param tract_sdc_thresh a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with % disconnection below threshold; default = 5)
-#' @param smooth a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging outputfile (default = 2)
+#' @param parcel_dmg_thresh a number between 1 and 100 giving the parcel damage threshold for displaying SSPL increases in figures (will not display SSPL increases for parcels with percent damage greater than or equal to the threshold; default = 100)
+#' @param tract_sdc_thresh a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with percent disconnection below threshold; default = 5)
+#' @param smooth a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging output file (default = 2)
 #'
 #' @importFrom utils read.csv tail
 #'
 #' @return A list structure to be input into downstream analysis functions.
-#' @examples \dontrun{
 #'
-#' }
 #' @export
 
 create_cfg_object=function(pat_id,lesion_path,out_path,

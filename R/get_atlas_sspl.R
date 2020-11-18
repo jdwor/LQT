@@ -8,9 +8,7 @@
 #'
 #' @return An .RData file with the suffix _sspl_matrix.RData, which contains the raw SSPL
 #' matrix computed from the binarized atlas SC matrix.
-#' @examples \dontrun{
 #'
-#' }
 #' @export
 
 get_atlas_sspl<-function(cfg){

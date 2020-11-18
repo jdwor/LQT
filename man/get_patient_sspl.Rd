@@ -23,8 +23,3 @@ by a value equal to 1 plus the maximum non-Inf value in the atlas SSPL matrix.
 This function computes increases in the structural shortest path length (SSPL) between brain regions
 associated with focal lesions. See Griffis et al. (2019, NeuroImage) for more details.
 }
-\examples{
-\dontrun{
-
-}
-}

@@ -17,8 +17,3 @@ and the associated tract names (column "Tract").
 This function computes tract-based disconnection measures using an MNI-registered lesion and the tract segmentations
 obtained from the curated HCP-842 tractography atlas as described in Yeh et al., (2018 - NeuroImage).
 }
-\examples{
-\dontrun{
-
-}
-}

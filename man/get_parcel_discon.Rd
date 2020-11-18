@@ -26,8 +26,3 @@ a .nii file with the suffix _percent_tdi.nii.gz. For each voxel, values correspo
 This function computes parcel-based direct disconnection measures using an
 MNI-registered lesion file and an MNI-registered brain parcellation.
 }
-\examples{
-\dontrun{
-
-}
-}

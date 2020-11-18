@@ -3,9 +3,6 @@
 #' It wraps the 'get_parcel_atlas', 'get_atlas_sspl', 'get_parcel_discon', and 'get_patient_sspl' functions.
 #' @param cfg a pre-made cfg structure (as list object).
 #'
-#' @examples \dontrun{
-#'
-#' }
 #' @export
 
 get_parcel_cons<-function(cfg){

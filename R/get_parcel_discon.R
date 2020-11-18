@@ -18,11 +18,7 @@
 #' a .edge file with the suffix _percent_parcel_spared_SC.edge. This is analogous to (8), but for the spared SC matrix;
 #' a .tdi.nii.gz file named the same way as the .trk.gz file. This contains a nifti image volume with track density imaging (TDI) values from the .trk.gz file at each voxel. It is essentially a way of converting the .trk.gz file into voxel space. Higher values indicate higher streamline densities at each grid element (voxel);
 #' a .nii file with the suffix _percent_tdi.nii.gz. For each voxel, values correspond the % reduction in streamline density relative to the atlas when accounting for the effects of the lesion.
-
 #'
-#' @examples \dontrun{
-#'
-#' }
 #' @export
 
 get_parcel_discon<-function(cfg){

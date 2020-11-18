@@ -18,8 +18,3 @@ This function uses the atlas SC matrix to compute an atlas SSPL matrix
 containing SSPLs between each pair of brain regions. It assumes that you have already
 run get_parcel_atlas to obtain the atlas SC matrix.
 }
-\examples{
-\dontrun{
-
-}
-}

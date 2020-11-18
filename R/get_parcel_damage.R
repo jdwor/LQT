@@ -9,9 +9,7 @@
 #' @return A list containing
 #' 1) damage.map (a nifti image in which voxel values correspond to the % of the associated parcel damaged by lesion),
 #' and 2) damage.vec (a vector with % damage values for each parcel in the brain parcellation).
-#' @examples \dontrun{
 #'
-#' }
 #' @export
 
 get_parcel_damage<-function(cfg){

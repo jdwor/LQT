@@ -19,8 +19,3 @@ a .tdi.nii.gz file named the same way as the .trk.gz file, which contains a nift
 This function computes parcel-based direct structural connectivity measures using an MNI-registered
 brain parcellation and the curated HCP-842 structural connectome template described in Yeh et al., (2018 - NeuroImage)
 }
-\examples{
-\dontrun{
-
-}
-}

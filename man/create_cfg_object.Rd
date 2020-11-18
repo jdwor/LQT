@@ -40,7 +40,7 @@ function defaults to the Schaefer-Yeo 100 parcel 7 network parcellation with sub
 if 'pass', they are based on streamline pass-throughs ('end' is more conservative and is recommended)}
 
 \item{sspl_spared_thresh}{a number between 1 and 100 representing the percent spared threshold for computing shortest structural path lengths
-(e.g. 100 means that only fully spared regions will be included in SSPL calculation, 1 means that regions with at least 1% spared will be included; default is 50)}
+(e.g. 100 means that only fully spared regions will be included in SSPL calculation, 1 means that regions with at least 1 percent spared will be included; default is 50)}
 
 \item{node_label}{a vector of strings corresponding to node labels (i.e. parcel names); must be the same length (P) as the number of parcels}
 
@@ -50,20 +50,15 @@ if 'pass', they are based on streamline pass-throughs ('end' is more conservativ
 
 \item{delta_sspl_thresh}{a number between 1 and 100 giving the percentile threshold for displaying SSPL increases in figures (will only display SSPL increases above percentile threshold; default = 90)}
 
-\item{parcel_dmg_thresh}{a number between 1 and 100 giving the parcel damage threshold for displaying SSPL increases in figures (will not display SSPL increases for parcels with % damage greater than or equal to the threshold; default = 100)}
+\item{parcel_dmg_thresh}{a number between 1 and 100 giving the parcel damage threshold for displaying SSPL increases in figures (will not display SSPL increases for parcels with percent damage greater than or equal to the threshold; default = 100)}
 
-\item{tract_sdc_thresh}{a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with % disconnection below threshold; default = 5)}
+\item{tract_sdc_thresh}{a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with percent disconnection below threshold; default = 5)}
 
-\item{smooth}{a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging outputfile (default = 2)}
+\item{smooth}{a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging output file (default = 2)}
 }
 \value{
 A list structure to be input into downstream analysis functions.
 }
 \description{
 This function compiles the relevant settings and file paths to be fed into analysis functions.
-}
-\examples{
-\dontrun{
-
-}
 }
