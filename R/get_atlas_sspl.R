@@ -4,7 +4,7 @@
 #' run get_parcel_atlas to obtain the atlas SC matrix.
 #' @param cfg a pre-made cfg structure (as list object).
 #'
-#' @importFrom igraph distances graph_from_adjacency_matrix
+#' @importFrom igraph distances graph_from_adjacency_matrix V
 #'
 #' @return An .RData file with the suffix _sspl_matrix.RData, which contains the raw SSPL
 #' matrix computed from the binarized atlas SC matrix.

@@ -3,7 +3,7 @@
 #' associated with focal lesions. See Griffis et al. (2019, NeuroImage) for more details.
 #' @param cfg a pre-made cfg structure (as list object).
 #'
-#' @importFrom igraph distances graph_from_adjacency_matrix
+#' @importFrom igraph distances graph_from_adjacency_matrix V
 #'
 #' @return A file with the suffix _SSPL_matrices.RData -- this contains the raw SSPL matrix (sspl_matrix), the lesion-based increases in SSPLs relative to the atlas (both direct and indirect disconnections; delta_ssplL_matrix), and the indirect-only delta matrix (idc_matrix);
 #' a file with the suffix _delta_SSPL.node -- this contains the node information for loading the delta SSPL matrix into an external viewer. Node sizes are proportional to the total SSPL increases for each node (relative to the max increase);

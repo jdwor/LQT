@@ -5,6 +5,7 @@
 #'
 #' @importFrom neurobase readnii writenii
 #' @importFrom R.matlab readMat
+#' @importFrom utils read.table write.csv
 #'
 #' @return A data.frame giving the percent of streamlines in each tract that were disconnected by the lesions (column "Discon")
 #' and the associated tract names (column "Tract").

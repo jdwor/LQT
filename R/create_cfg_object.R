@@ -19,6 +19,8 @@
 #' @param tract_sdc_thresh a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with % disconnection below threshold; default = 5)
 #' @param smooth a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging outputfile (default = 2)
 #'
+#' @importFrom utils read.csv tail
+#'
 #' @return A list structure to be input into downstream analysis functions.
 #' @examples \dontrun{
 #'
@@ -72,11 +74,11 @@ create_cfg_object=function(pat_id,lesion_path,out_path,
   }
 
   if(!is.null(file_suffix)){
-    cfg$file_suffic=file_suffix
+    cfg$file_suffix=file_suffix
   }else if(is.null(file_suffix) & is.null(parcel_path)){
     cfg$file_suffix="Yeo7100"
   }else{
-    cfg$file_suffix=tail(strsplit(test,"/|\\.nii|\\.nii\\.gz")[[1]],1)
+    cfg$file_suffix=tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1)
   }
 
   if(!con_type%in%c("end","pass")){

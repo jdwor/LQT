@@ -4,6 +4,7 @@
 #' @param cfg a pre-made cfg structure (as list object).
 #'
 #' @importFrom neurobase readnii writenii
+#' @importFrom utils write.csv
 #'
 #' @return A list containing
 #' 1) damage.map (a nifti image in which voxel values correspond to the % of the associated parcel damaged by lesion),

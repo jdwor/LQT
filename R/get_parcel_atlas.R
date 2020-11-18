@@ -4,6 +4,7 @@
 #' @param cfg a pre-made cfg structure (as list object).
 #'
 #' @importFrom R.matlab readMat
+#' @importFrom utils read.table
 #'
 #' @return An .RData file with the suffix .connectivity.RData, which contains both the structural connection matrix (connectivity) and parcel names (name);
 #' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
