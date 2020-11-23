@@ -38,7 +38,7 @@ get_tract_discon<-function(cfg){
     out_file = paste0(td.path,"/",my_tracts[i])
 
     # compute tract disconnection
-    out=suppressWarnings(system(paste0("! ",cfg$dsi_path,' --action=ana --source=',cfg$source_path,"/HCP842_1mm.fib.gz",
+    out=suppressWarnings(system(paste0("! ",cfg$dsi_path," --action=ana --source=",cfg$source_path,"/HCP842_1mm.fib.gz",
                   " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
                   " --output=",out_file," --export=stat"),intern=T))
 
@@ -79,9 +79,11 @@ get_tract_discon<-function(cfg){
   }else{
     tc_index = match(tract_name,tract_names)
     tract_discon = 100*(tract_discon/tract_counts[tc_index])
+    tract_pathways = tract_pathways[tc_index]
   }
 
-  output = data.frame(Tract = tract_name, Discon = tract_discon)
+  output = data.frame(Tract = tract_name, Discon = tract_discon,
+                      Pathway = tract_pathways)
   write.csv(output,paste0(td.path,"/",cfg$pat_id,"_percent_discon_tracts.csv"))
 
   cat("Finished computing patient disconnection measures.")

@@ -70,7 +70,8 @@ get_patient_sspl<-function(cfg){
   # write out .edge file
   write(round(t(delta_sspl_matrix),4),
         paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-               "_delta_SSPL.edge"),sep="\t")
+               "_delta_SSPL.edge"),
+        ncolumns=ncol(delta_sspl_matrix),sep="\t")
 
   # write out .node files
   NodeSize = apply(sspl_matrix,2,sum,na.rm=T)/apply(atlas_sspl,2,sum,na.rm=T) # size nodes according to % maximum # of affected connections
@@ -109,7 +110,8 @@ get_patient_sspl<-function(cfg){
   # write out .edge file
   write(round(t(idc_matrix),4),
         paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-               "indirect_SDC_edge"),sep="\t")
+               "indirect_SDC_edge"),
+        ncolumns=ncol(idc_matrix),sep="\t")
 
   # construct output filename and save
   OutputFile = paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_indirect_SDC.node")

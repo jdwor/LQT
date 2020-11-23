@@ -7,8 +7,7 @@
 #' @importFrom neurobase readnii writenii
 #' @importFrom fslr fslsmooth
 #'
-#' @return A .trk.gz file. This contains all of the streamlines that intersected the lesion and can be viewed using e.g. DSI_Studio;
-#' an .RData file with the suffix .connectivity.RData. This contains both the structural disconnection matrix (connectivity) and parcel names (name);
+#' @return An .RData file with the suffix .connectivity.RData. This contains both the structural disconnection matrix (connectivity) and parcel names (name);
 #' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
 #' an .RData file with the suffix _percent_parcel_mats.RData. This file contains a disconnection adjacency matrix (pct_sdc_matrix) and a spared connection adjacency matrix (pct_spared_sc_matrix);
 #' a .txt file with the suffix .connectogram.txt. This file contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);
@@ -93,10 +92,12 @@ get_parcel_discon<-function(cfg){
   # write out .edge files
   write(round(t(pct_sdc_matrix),4),
         paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-               "_percent_parcel_SDC.edge"),sep="\t")
+               "_percent_parcel_SDC.edge"),
+        ncolumns=ncol(pct_sdc_matrix),sep="\t")
   write(round(t(pct_spared_sc_matrix),4),
         paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-               "_percent_parcel_spaced_SC.edge"),sep="\t")
+               "_percent_parcel_spared_SC.edge"),
+        ncolumns=ncol(pct_spared_sc_matrix),sep="\t")
 
   # write out .node files
   NodeSize = apply(pct_sdc_matrix,2,sum,na.rm=T)/apply((atlas_con>0)*100,2,sum,na.rm=T) # size nodes according to % maximum # of affected connections

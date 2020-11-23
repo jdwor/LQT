@@ -5,6 +5,7 @@ library(LQT)
 pat_id = "Subject1"
 out_path = '/Users/jordandworkin/Desktop/TestLes'
 lesion_path = '/Users/jordandworkin/LQT/inst/extdata/Example_Lesions/ExampleLesion1.nii.gz'
+#lesion_path = '/Users/jordandworkin/Desktop/MSles/gold_stand_les.nii.gz'
 
 cfg = create_cfg_object(pat_id=pat_id,out_path=out_path,
                         lesion_path=lesion_path)

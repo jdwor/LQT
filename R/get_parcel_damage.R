@@ -20,8 +20,7 @@ get_parcel_damage<-function(cfg){
   # Check if lesion and parcels are the same dimensions
   if(!identical(dim(lesions),dim(parcels))){
     stop('Lesion and parcel volumes have different dimensions. Please make sure that both volumes are in the same space and have identical dimensions.')
-  }
-  else{
+  }else{
     cat('Computing parcel damage measures.\n')
   }
 
@@ -37,6 +36,10 @@ get_parcel_damage<-function(cfg){
     pcd_vect[i] = mean(lesions[parcels==i])*100 # get percent of parcel damaged
     pcd_vol[parcels==i] = pcd_vect[i] # put into volume
   }
+
+  pcd_vect=data.frame(Parcel=cfg$node_label,
+                      ParcelGroup=cfg$node_group,
+                      PercentDamage=pcd_vect)
 
   cat('Finished computing parcel damage measures')
 
