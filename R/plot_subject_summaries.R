@@ -4,10 +4,14 @@
 #'
 #' @importFrom neurobase readnii writenii
 #' @importFrom utils read.csv write.csv
-#' @importFrom ggplot2 ggplot scale_fill_manual theme_bw
-#' @importFrom ggplot2 xlab ylab theme element_blank ggtitle
-#' @importFrom ggplot2 guides guide_legend scale_fill_gradient2
+#' @importFrom ggplot2 ggplot scale_fill_manual theme_bw geom_point
+#' @importFrom ggplot2 xlab ylab theme element_blank ggtitle geom_segment
+#' @importFrom ggplot2 guides guide_legend scale_fill_manual coord_fixed
+#' @importFrom ggplot2 scale_identity theme_bw geom_bar coord_flip
 #' @importFrom nationalparkcolors park_palette
+#' @importFrom patchwork plot_layout plot_annotation
+#' @importFrom igraph graph_from_adjacency_matrix E
+#' @importFrom network as.matrix.network.edgelist network
 #'
 #' @return A data.frame giving the percent of streamlines in each tract that were disconnected by the lesions (column "Discon")
 #' and the associated tract names (column "Tract").
@@ -16,8 +20,14 @@
 
 plot_subject_summaries<-function(cfg, type=c("")){
 
+  cols=c(park_palette("GeneralGrant")[c(2,3,4,1,8)],
+         park_palette("CraterLake")[c(-c(4,6))],
+         park_palette("Zion")[c(4,3,1,5,2)],
+         park_palette("DeathValley"),
+         park_palette("BlueRidgePkwy"))
+
   # Parcel damage plot
-  if("parcel.damage"%in%type | "all"%in%type){
+  if(type=="parcel.damage"){
     pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
     parc.dam=read.csv(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
                              "_percent_damage.csv"),header=T)[,-1]
@@ -27,17 +37,19 @@ plot_subject_summaries<-function(cfg, type=c("")){
                          "Lent_Nuc_P",parc.dam$Parcel)
     parc.dam$Parcel=gsub("RH_","R_",parc.dam$Parcel)
     parc.dam$Parcel=gsub("LH_","L_",parc.dam$Parcel)
+    parc.dam$Color=cols[as.numeric(as.factor(parc.dam$ParcelGroup))]
     top10=sort(parc.dam$PercentDamage,decreasing=T,index.return=T)$ix[1:10]
     subdf=parc.dam[top10,]
     subdf$Parcel=factor(subdf$Parcel,levels=rev(subdf$Parcel))
-    subdf$ParcelGroup=as.character(subdf$ParcelGroup)
-    cols=c(park_palette("GeneralGrant")[c(2,3,4,5,1,6,8)],
-           park_palette("CraterLake")[1:3])
+    subdf$ParcelGroup=factor(subdf$ParcelGroup,
+                             levels=unique(subdf$ParcelGroup))
 
-    ggplot(subdf,aes(x=Parcel,y=PercentDamage,fill=ParcelGroup))+
+    p1=ggplot(subdf,aes(x=Parcel,y=PercentDamage,fill=Color))+
       geom_bar(stat="identity",alpha=.9,col="black")+coord_flip()+
       ggtitle("Parcel Damage")+
-      scale_fill_manual(values=cols)+
+      scale_fill_identity("Parcel Group",guide="legend",
+                          labels=subdf$ParcelGroup,
+                          breaks=subdf$Color)+
       theme_bw()+ylab("% Damage")+xlab(NULL)+
       theme(plot.title=element_text(size=12,
                                     face = 'bold',
@@ -48,29 +60,28 @@ plot_subject_summaries<-function(cfg, type=c("")){
             axis.title.x=element_text(size=9),
             legend.title =element_text(size=9),
             legend.text =element_text(size=8),
-            legend.position='bottom',
+            legend.position='right',
             axis.ticks=element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
             panel.background = element_blank())
+    return(p1)
 
-  }
-
-  # Tract disconnection plot
-  if("tract.discon"%in%type | "all"%in%type){
+  }else if(type=="tract.discon"){
     td.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Tract_Disconnection")
     trac.dis=read.csv(paste0(td.path,"/",cfg$pat_id,
                              "_percent_discon_tracts.csv"),header=T)[,-1]
     order=sort(trac.dis$Discon,decreasing=T,index.return=T)$ix
-    subdf=trac.dis[order,]; subdf=subdf[subdf$Discon>cfg$tract_sdc_thresh,]
-    subdf$Tract=factor(subdf$Tract,levels=rev(subdf$Tract))
-    subdf$Pathway=as.character(subdf$Pathway)
-    cols=park_palette("Yosemite")
+    subdf2=trac.dis[order,]; subdf2=subdf2[subdf2$Discon>cfg$tract_sdc_thresh,]
+    subdf2$Tract=factor(subdf2$Tract,levels=rev(subdf2$Tract))
+    subdf2$Pathway=as.character(subdf2$Pathway)
+    cols2=park_palette("Yosemite")
 
-    ggplot(subdf,aes(x=Tract,y=Discon,fill=Pathway))+
-      geom_bar(stat="identity",alpha=.9,col="black")+coord_flip()+
+    p2=ggplot(subdf2,aes(x=Tract,y=Discon,fill=Pathway))+
+      geom_bar(stat="identity",alpha=.9,col="black")+
+      coord_flip()+
       ggtitle("Tract Disconnection")+
-      scale_fill_manual(values=cols)+
+      scale_fill_manual(values=cols2)+
       theme_bw()+ylab("% Disconnection")+xlab(NULL)+
       theme(plot.title=element_text(size=12,
                                     face = 'bold',
@@ -81,15 +92,13 @@ plot_subject_summaries<-function(cfg, type=c("")){
             axis.title.x=element_text(size=9),
             legend.title =element_text(size=9),
             legend.text =element_text(size=8),
-            legend.position='bottom',
+            legend.position='right',
             axis.ticks=element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
             panel.background = element_blank())
-  }
-
-  # Parcel disconnection plot
-  if("parcel.discon"%in%type | "all"%in%type){
+    return(p2)
+  }else if(type=="parcel.discon"){
     pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
     parc.dam=read.csv(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
                              "_percent_damage.csv"),header=T)[,-1]
@@ -101,55 +110,155 @@ plot_subject_summaries<-function(cfg, type=c("")){
     load(paste0(at.path,"/",at.file))
 
     at_con=connectivity; rm(connectivity,atlas)
-    at_con[pct_sdc_matrix==0]=0
+    pat_sdc=at_con*pct_sdc_matrix/100
 
-    ord1=sort(parc.dam$PercentDamage,index.return=T)$ix
-    mat1=pct_sdc_matrix[ord1,ord1]; names1=parc.dam$ParcelGroup[ord1]
-    ord2=sort(parc.dam$ParcelGroup[ord1],index.return=T)$ix
-    mat2=mat1[ord2,ord2]; names2=names1[ord2]
-    col2 <- colorRampPalette(c("#67001F", "#B2182B", "#D6604D", "#F4A582",
-                               "#FDDBC7", "#FFFFFF", "#D1E5F0", "#92C5DE",
-                               "#4393C3", "#2166AC", "#053061"))
-
-    names2lag=c(names2[-1],NA)
-    diffsrow=nrow(mat2)-which(names2lag!=names2)+.5
-    diffscol=which(names2lag!=names2)+.5
-    rownames(mat1)=names1
-    colnames(mat1)=NULL
-    rownames(mat2)=names2
-    colnames(mat2)=NULL
-    corrplot(mat2/100,is.corr=F,tl.pos="l",
-             method="color",tl.cex=.5,col=rev(col2(21)))
-    segments(diffscol, rep(nrow(mat1)+.5,length(diffs)),
-             diffscol, rep(0.5,length(diffs)), lwd=1)
-    segments(rep(nrow(mat1)+.5,length(diffs)), diffsrow,
-             rep(0.5,length(diffs)), diffsrow, lwd=1)
-
-    g = graph_from_adjacency_matrix(at_con,mode="undirected",
-                                    diag=F,weighted=T)
-    g2 = graph_from_adjacency_matrix(pct_sdc_matrix,mode="undirected",
-                                    diag=F,weighted=T)
-
-    E(g)$color=park_palette("ArcticGates")[6]; cols=E(g)$color
-    weights=E(g2)$weight/100
-    #weights=rep(1,length(E(g2)$weight))
-    editcols=function(x,cols,weights){
-      return(adjustcolor(cols[x],alpha.f=weights[x]))
+    communities=unique(parc.dam$ParcelGroup)
+    comm_sdc=matrix(nrow=length(communities),
+                    ncol=length(communities))
+    for(i in 1:length(communities)){
+      for(j in 1:i){
+        comm_i=communities[i]
+        comm_j=communities[j]
+        inds_i=parc.dam$ParcelGroup==comm_i
+        inds_j=parc.dam$ParcelGroup==comm_j
+        disc_ij=sum(pat_sdc[inds_i,inds_j])/sum(at_con[inds_i,inds_j])
+        if(is.na(disc_ij)){disc_ij=0}
+        comm_sdc[i,j]=disc_ij
+        comm_sdc[j,i]=disc_ij
+      }
     }
-    E(g)$color=unlist(lapply(1:length(cols),editcols,cols,weights))
+    comm_sdc
+    rownames(comm_sdc)=communities
+    colnames(comm_sdc)=communities
+    corr <- reshape2::melt(comm_sdc, na.rm = TRUE)
+    colnames(corr) <- c("Var1", "Var2", "value")
+    corr$value=corr$value*100
+    corr$size=corr$value/10
+    corr=corr[corr$value>0,]
+    corr$color=park_palette("ArcticGates")[6]
 
-    plot.igraph(g,vertex.label.cex=0.01,
-                vertex.label.family="Helvetica",
-                vertex.label.font=2,
-                vertex.label.color="black",
-                vertex.color=as.factor(parc.dam$ParcelGroup),
-                vertex.size=6*(parc.dam$PercentDamage+.01)^(1/6),
-                edge.width=(E(g)$weight)^(1/1.5)/100,
-                xlim=c(-.9,.9),ylim=c(-.9,.9),
-                layout=cfg$parcel_coords[,c(1,2)])
+    c=ggplot(corr, mapping=aes_string(x="Var1",y="Var2",fill="color"))+
+      geom_point(color="black",shape=21,
+                 aes_string(size="size",alpha="value"))+
+      coord_fixed(ratio=1)+
+      scale_size_identity()+guides(alpha = FALSE) +
+      scale_fill_identity()+theme_bw()+xlab(NULL)+ylab(NULL)+
+      theme(plot.title=element_text(size=12,face = 'bold',
+                                    colour = '#3B3B3B'),
+            axis.text.x=element_text(size=7,angle=30,hjust=1),
+            axis.text.y=element_text(size=7,angle=30,hjust=1),
+            axis.title.y=element_text(size=9),
+            axis.title.x=element_text(size=9),
+            legend.title =element_text(size=9,vjust=4),
+            legend.text =element_text(size=8),
+            legend.position='right',
+            axis.ticks=element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),
+            panel.background = element_blank())
 
-    ## Check on .edge files, something is off there
-    ## Also what the hell is the 'name' vector in the conn files?
+    ndata=data.frame(Parcel=parc.dam$Parcel,
+                     X=cfg$parcel_coords[,1],
+                     Y=cfg$parcel_coords[,2],
+                     Z=cfg$parcel_coords[,3],
+                     Comm=parc.dam$ParcelGroup,
+                     Damage=parc.dam$PercentDamage)
+    ndata$Size=5*(ndata$Damage+.01)^(1/6)
+    ndata$Color=cols[as.numeric(as.factor(ndata$Comm))]
+    xyz = ndata[,2:4]
+
+    at_con2=at_con; at_con2[pct_sdc_matrix==0]=0
+    g_at = graph_from_adjacency_matrix(at_con2,mode="undirected",diag=F,weighted=T)
+    g_pat = graph_from_adjacency_matrix(pct_sdc_matrix,mode="undirected",diag=F,weighted=T)
+    net = network(pct_sdc_matrix, directed=F,)
+    edges = as.matrix.network.edgelist(net)
+    edges = data.frame(xyz[edges[, 1], ], xyz[edges[, 2], ])
+    names(edges) = c("x1", "y1", "z1", "x2", "y2", "z2")
+    edges$Size=(E(g_at)$weight)^(1/1.5)/200
+    edges$Damage=E(g_pat)$weight/100
+
+    g1=ggplot(ndata,aes(x=X,y=Y))+coord_fixed(ratio=1)+
+      geom_segment(data=edges,aes(x=x1,y=y1,xend=x2,yend=y2,
+                                  size=Size,alpha=Damage),
+                   color=park_palette("ArcticGates")[6])+
+      geom_point(data=ndata,aes(fill=Color),size=2.5,
+                 color="black",shape=21)+
+      scale_fill_identity("Parcel Group",guide="legend",
+                          labels=ndata$Comm,breaks=ndata$Color)+
+      scale_size_identity()+theme_bw()+
+      theme(plot.title=element_text(size=12,face = 'bold',
+                                    colour = '#3B3B3B'),
+            axis.text.x=element_blank(),
+            axis.text.y=element_blank(),
+            axis.title.y=element_text(size=9),
+            axis.title.x=element_text(size=9),
+            legend.title =element_text(size=9,vjust=4),
+            legend.text =element_text(size=8),
+            legend.position='right',
+            axis.ticks=element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.border = element_blank(),
+            panel.background = element_blank())
+    g3=ggplot(ndata,aes(x=X,y=Z))+coord_fixed(ratio=1)+
+      geom_segment(data=edges,aes(x=x1,y=z1,xend=x2,yend=z2,
+                                  size=Size,alpha=Damage),
+                   color=park_palette("ArcticGates")[6])+
+      geom_point(data=ndata,aes(fill=Color),size=2.5,
+                 color="black",shape=21)+
+      scale_fill_identity()+scale_alpha(guide="none")+
+      scale_size_identity()+theme_bw()+
+      theme(plot.title=element_text(size=12,face = 'bold',
+                                    colour = '#3B3B3B'),
+            axis.text.x=element_blank(),
+            axis.text.y=element_blank(),
+            axis.title.y=element_text(size=9),
+            axis.title.x=element_text(size=9),
+            legend.title =element_text(size=9,vjust=4),
+            legend.text =element_text(size=8),
+            legend.position='right',
+            axis.ticks=element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.border = element_blank(),
+            panel.background = element_blank())
+    g2=ggplot(ndata,aes(x=Y,y=Z))+coord_fixed(ratio=1)+
+      geom_segment(data=edges,aes(x=y1,y=z1,xend=y2,yend=z2,
+                                  size=Size,alpha=Damage),
+                   color=park_palette("ArcticGates")[6])+
+      geom_point(data=ndata,aes(fill=Color),size=2.5,
+                 color="black",shape=21)+
+      scale_fill_identity()+scale_alpha(guide="none")+
+      scale_size_identity()+theme_bw()+
+      theme(plot.title=element_text(size=12,face = 'bold',
+                                    colour = '#3B3B3B'),
+            axis.text.x=element_blank(),
+            axis.text.y=element_blank(),
+            axis.title.y=element_text(size=9),
+            axis.title.x=element_text(size=9),
+            legend.title =element_text(size=9,vjust=4),
+            legend.text =element_text(size=8),
+            legend.position='right',
+            axis.ticks=element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.grid.major = element_blank(),
+            panel.border = element_blank(),
+            panel.background = element_blank())
+
+    p3=c+g2+g1+g3+
+      plot_layout(byrow=F,nrow=2,guides="collect")+
+      plot_annotation(title="Parcel disconnection",
+                      subtitle="Visualization of inter-parcel and intra/inter-community disconnectivity") &
+      theme(plot.title=element_text(size=12,face='bold',
+                                    colour = '#3B3B3B',
+                                    hjust=.05,vjust=1),
+            plot.subtitle = element_text(size=10.5,
+                                         colour = '#3B3B3B',
+                                         hjust=.14,vjust=1))
+    return(p3)
+
+
+    ## Also what is the 'name' vector in the conn files?
 
   }
 
