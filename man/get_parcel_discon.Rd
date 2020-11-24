@@ -10,8 +10,7 @@ get_parcel_discon(cfg)
 \item{cfg}{a pre-made cfg structure (as list object).}
 }
 \value{
-A .trk.gz file. This contains all of the streamlines that intersected the lesion and can be viewed using e.g. DSI_Studio;
-an .RData file with the suffix .connectivity.RData. This contains both the structural disconnection matrix (connectivity) and parcel names (name);
+An .RData file with the suffix .connectivity.RData. This contains both the structural disconnection matrix (connectivity) and parcel names (name);
 an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
 an .RData file with the suffix _percent_parcel_mats.RData. This file contains a disconnection adjacency matrix (pct_sdc_matrix) and a spared connection adjacency matrix (pct_spared_sc_matrix);
 a .txt file with the suffix .connectogram.txt. This file contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);

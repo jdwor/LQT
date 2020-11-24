@@ -14,7 +14,7 @@ create_cfg_object(
   con_type = "end",
   sspl_spared_thresh = 50,
   node_label = NULL,
-  node_color = NULL,
+  node_group = NULL,
   parcel_coords = NULL,
   delta_sspl_thresh = 90,
   parcel_dmg_thresh = 100,
@@ -44,7 +44,7 @@ if 'pass', they are based on streamline pass-throughs ('end' is more conservativ
 
 \item{node_label}{a vector of strings corresponding to node labels (i.e. parcel names); must be the same length (P) as the number of parcels}
 
-\item{node_color}{a vector of integer values corresponding to e.g. network assignments or partitions (used to color nodes in visualizations)}
+\item{node_group}{a vector of strings integer values corresponding to e.g. network assignments or partitions (used to color nodes in visualizations)}
 
 \item{parcel_coords}{a P-by-3 matrix of parcel coordinates used for brain network graphs; if not supplied, they will be estimated from the parcel file}
 
