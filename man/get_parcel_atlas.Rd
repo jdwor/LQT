@@ -10,7 +10,7 @@ get_parcel_atlas(cfg)
 \item{cfg}{a pre-made cfg structure (as list object).}
 }
 \value{
-An .RData file with the suffix .connectivity.RData, which contains both the structural connection matrix (connectivity) and parcel names (name);
+An .RData file with the suffix .connectivity.RData, which contains the structural connection matrix (connectivity);
 an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
 a .txt file with the suffix .connectogram.txt, which contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);
 a .tdi.nii.gz file named the same way as the .trk.gz file, which contains a nifti image with track density imaging (TDI) values at each voxel. It is essentially a way of converting the .trk.gz file into voxel space. Higher values indicate higher streamline densities at each voxel.

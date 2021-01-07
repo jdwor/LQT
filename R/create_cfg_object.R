@@ -38,14 +38,18 @@ create_cfg_object=function(pat_id,lesion_path,out_path,
     if(file.exists(dsi_path)){
       cfg$dsi_path=dsi_path
     }else{
-      stop("Specified 'dsi_path' does not exist.")
+      stop("Specified path to dsi_studio ('dsi_path') does not exist.\n
+           If it is already installed, please specify the correct path in the function call.\n
+           If not, please download the software at http://dsi-studio.labsolver.org/dsi-studio-download.")
     }
   }else{
     checkdsi='/Applications/dsi_studio.app/Contents/MacOS/dsi_studio'
     if(file.exists(checkdsi)){
       cfg$dsi_path=checkdsi
     }else{
-      stop("Cannot find path to dsi_studio, please specify in function call.")
+      stop("Cannot find path to dsi_studio.\n
+           If it is already installed, please specify the correct path in the function call.\n
+           If not, please download the software at http://dsi-studio.labsolver.org/dsi-studio-download.")
     }
   }
 
