@@ -50,6 +50,9 @@ get_parcel_discon<-function(cfg){
   matfile=paste0(pd.path,"/",list.files(pd.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)
   connectivity=mat$connectivity
+  rownames(connectivity)=cfg$node_label
+  colnames(connectivity)=cfg$node_label
+  node_group=cfg$node_group
   name=strsplit(intToUtf8(mat$name),"\n")[[1]]
   atlas=mat$atlas
   file.remove(matfile); rm(mat)
@@ -60,10 +63,11 @@ get_parcel_discon<-function(cfg){
   colnames(global)=c("Measure","Value")
   local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
   colnames(local)[1]="Measure"
+  colnames(local)[-1]=cfg$node_label
   file.remove(netfile)
 
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
-  save(connectivity,file=gsub("\\.mat","\\.RData",matfile))
+  save(connectivity,node_group,file=gsub("\\.mat","\\.RData",matfile))
 
   # load atlas SC matrix
   pat_con=connectivity; rm(connectivity)
@@ -76,6 +80,11 @@ get_parcel_discon<-function(cfg){
   pct_spared_sc_matrix = 100*((atlas_con-pat_con)/atlas_con)
   pct_spared_sc_matrix[is.na(pct_spared_sc_matrix)]=0
   pct_spared_sc_matrix[is.infinite(pct_spared_sc_matrix)]=0
+
+  rownames(pct_sdc_matrix)=cfg$node_label
+  rownames(pct_sdc_matrix)=cfg$node_label
+  colnames(pct_spared_sc_matrix)=cfg$node_label
+  colnames(pct_spared_sc_matrix)=cfg$node_label
 
   fname=paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_parcel_mats.RData")
   save(pct_sdc_matrix, pct_spared_sc_matrix, file=fname)

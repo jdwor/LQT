@@ -28,6 +28,9 @@ get_parcel_atlas<-function(cfg){
   matfile=paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)
   connectivity=mat$connectivity
+  rownames(connectivity)=cfg$node_label
+  colnames(connectivity)=cfg$node_label
+  node_group=cfg$node_group
   name=strsplit(intToUtf8(mat$name),"\n")[[1]]
   atlas=mat$atlas
   file.remove(matfile); rm(mat)
@@ -37,10 +40,11 @@ get_parcel_atlas<-function(cfg){
   colnames(global)=c("Measure","Value")
   local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
   colnames(local)[1]="Measure"
+  colnames(local)[-1]=cfg$node_label
   file.remove(netfile)
 
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
-  save(connectivity,file=gsub("\\.mat","\\.RData",matfile))
+  save(connectivity,node_group,file=gsub("\\.mat","\\.RData",matfile))
 
   cat('Finished creating atlas files.\n')
 }

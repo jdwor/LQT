@@ -26,9 +26,12 @@ get_atlas_sspl<-function(cfg){
   sspl_matrix = distances(graph,v=V(graph),to=V(graph)) # SSPL for end atlas
   diag(sspl_matrix)=NA # set diagonal to NA
   sspl_matrix[is.infinite(sspl_matrix)] = NA # set any Inf values to NA
+  rownames(sspl_matrix)=cfg$node_label
+  colnames(sspl_matrix)=cfg$node_label
+  node_group=cfg$node_group
 
   out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'_SSPL_matrix.RData')
-  save(sspl_matrix,file=out_file)
+  save(sspl_matrix,node_group,file=out_file)
 
   cat('Finished calculating atlas SSPL.\n')
 }

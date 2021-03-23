@@ -4,8 +4,8 @@ library(LQT)
 
 ########### Set up cfg structure ###########
 pat_id = "Subject1"
-out_path = '/Users/jordandworkin/Desktop/TestLes'
-lesion_path = '/Users/jordandworkin/LQT/inst/extdata/Example_Lesions/ExampleLesion1.nii.gz'
+out_path = '/Users/jordandworkin/Desktop/s01'
+lesion_path = '/Users/jordandworkin/Desktop/s01/ewdavid_bin.nii.gz'
 
 cfg = create_cfg_object(pat_id=pat_id,
                         out_path=out_path,
