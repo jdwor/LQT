@@ -5,7 +5,7 @@ library(LQT)
 ########### Set up cfg structure ###########
 pat_id = "Subject1"
 out_path = '/Users/jordandworkin/Desktop/s01'
-lesion_path = '/Users/jordandworkin/Desktop/s01/ewdavid_bin.nii.gz'
+lesion_path = '/Users/jordandworkin/Desktop/s01/lesion.nii.gz'
 
 cfg = create_cfg_object(pat_id=pat_id,
                         out_path=out_path,
@@ -24,3 +24,7 @@ plots = plot_subject_summaries(cfg)
 plots$parcel.damage / plots$tract.discon
 plots$parcel.discon
 plots$parcel.sspl
+
+
+
+
