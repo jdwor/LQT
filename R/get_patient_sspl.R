@@ -110,9 +110,10 @@ get_patient_sspl<-function(cfg){
   colnames(delta_sspl_matrix)=cfg$node_label
   rownames(idc_matrix)=cfg$node_label
   colnames(idc_matrix)=cfg$node_label
+  node_label=cfg$node_label
   node_group=cfg$node_group
 
-  save(sspl_matrix,delta_sspl_matrix,idc_matrix,node_group,
+  save(sspl_matrix,delta_sspl_matrix,idc_matrix,node_label,node_group,
        file=paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_SSPL_matrices.RData"))
 
   # write out .edge file

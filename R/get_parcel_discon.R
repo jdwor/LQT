@@ -49,15 +49,14 @@ get_parcel_discon<-function(cfg){
   # resave connectivity file (raw streamline counts)
   matfile=paste0(pd.path,"/",list.files(pd.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)
-  connectivity=mat$connectivity
-  rownames(connectivity)=cfg$node_label
-  colnames(connectivity)=cfg$node_label
+  disconnectivity=mat$connectivity
+  rownames(disconnectivity)=cfg$node_label
+  colnames(disconnectivity)=cfg$node_label
+  node_label=cfg$node_label
   node_group=cfg$node_group
-  name=strsplit(intToUtf8(mat$name),"\n")[[1]]
-  atlas=mat$atlas
   file.remove(matfile); rm(mat)
 
-  # resave network measures file (raw streamline counts)
+  # re-save network measures file (raw streamline counts)
   netfile=paste0(pd.path,"/",list.files(pd.path,pattern="network_measures\\.txt$"))
   global=read.table(netfile,sep="\t")[1:27,]
   colnames(global)=c("Measure","Value")
@@ -67,10 +66,10 @@ get_parcel_discon<-function(cfg){
   file.remove(netfile)
 
   save(global,local,file=gsub("\\.txt","\\.RData",netfile))
-  save(connectivity,node_group,file=gsub("\\.mat","\\.RData",matfile))
+  save(disconnectivity,node_label,node_group,file=gsub("\\.mat","\\.RData",matfile))
 
   # load atlas SC matrix
-  pat_con=connectivity; rm(connectivity)
+  pat_con=disconnectivity; rm(disconnectivity)
   load(paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.RData")))
   atlas_con=connectivity; rm(connectivity)
 
