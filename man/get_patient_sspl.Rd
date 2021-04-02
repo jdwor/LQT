@@ -4,10 +4,12 @@
 \alias{get_patient_sspl}
 \title{Get structural shortest path length (SSPL)}
 \usage{
-get_patient_sspl(cfg)
+get_patient_sspl(cfg, cores = 1)
 }
 \arguments{
 \item{cfg}{a pre-made cfg structure (as list object).}
+
+\item{cores}{an integer value that indicates how many parallel cores the function should be run on.}
 }
 \value{
 A file with the suffix _SSPL_matrices.RData -- this contains the raw SSPL matrix (sspl_matrix), the lesion-based increases in SSPLs relative to the atlas (both direct and indirect disconnections; delta_ssplL_matrix), and the indirect-only delta matrix (idc_matrix);

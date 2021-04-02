@@ -4,10 +4,12 @@
 \alias{get_parcel_damage}
 \title{Get parcel damage}
 \usage{
-get_parcel_damage(cfg)
+get_parcel_damage(cfg, cores = 1)
 }
 \arguments{
 \item{cfg}{a pre-made cfg structure (as list object).}
+
+\item{cores}{an integer value that indicates how many parallel cores the function should be run on.}
 }
 \value{
 A list containing

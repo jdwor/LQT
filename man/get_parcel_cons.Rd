@@ -4,10 +4,12 @@
 \alias{get_parcel_cons}
 \title{Get parcel disconnection measures/maps}
 \usage{
-get_parcel_cons(cfg)
+get_parcel_cons(cfg, cores = 1)
 }
 \arguments{
 \item{cfg}{a pre-made cfg structure (as list object).}
+
+\item{cores}{an integer value that indicates how many parallel cores the function should be run on.}
 }
 \description{
 This is a wrapper function that calls a series of functions to create various parcel disconnection measures.

@@ -1,7 +1,7 @@
 #' @title Create cfg structure for analysis
 #' @description This function compiles the relevant settings and file paths to be fed into analysis functions.
-#' @param pat_id a string specifying the given patient's ID (used as prefix for output files)
-#' @param lesion_path a string specifying the path to your lesion mask (pre-registered to MNI template)
+#' @param pat_ids a vector of strings specifying patients' IDs (used as directories for output files)
+#' @param lesion_paths a vector of strings specifying the path to patients' lesion masks (pre-registered to MNI template, and corresponding to pat_ids)
 #' @param out_path a string specifying the path to your desired output directory; patient and atlas result directories will be created here
 #' @param dsi_path a string specifying the path to your local DSI_Studio program
 #' @param parcel_path a string specifying the path to a parcellation map (should have identical dimensions to lesion and be in MNI template space);
@@ -19,19 +19,26 @@
 #' @param tract_sdc_thresh a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with percent disconnection below threshold; default = 5)
 #' @param smooth a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging output file (default = 2)
 #'
-#' @importFrom utils read.csv tail
+#' @importFrom utils read.csv tail download.file unzip
+#' @importFrom purrr map list_modify
 #'
 #' @return A list structure to be input into downstream analysis functions.
 #'
 #' @export
 
-create_cfg_object=function(pat_id,lesion_path,out_path,
+create_cfg_object=function(pat_ids,lesion_paths,out_path,
                            dsi_path=NULL,parcel_path=NULL,file_suffix=NULL,
                            con_type="end",sspl_spared_thresh=50,node_label=NULL,
                            node_group=NULL,parcel_coords=NULL,delta_sspl_thresh=90,
                            parcel_dmg_thresh=100,tract_sdc_thresh=5,smooth=2){
   cfg=list()
-  cfg$pat_id=pat_id; cfg$lesion_path=lesion_path; cfg$out_path=out_path
+  cfg$pat_id=pat_ids; cfg$lesion_path=lesion_paths
+  if(length(pat_ids)!=length(lesion_paths)){
+    stop("Number of patient ids and lesion paths must be the same.")
+  }else{
+    num_subs=length(pat_ids)
+  }
+  cfg$out_path=rep(out_path,num_subs)
 
   if(!file.exists(system.file("extdata","Tractography_Atlas",package="LQT"))){
     extdata=system.file("extdata",package="LQT")
@@ -62,11 +69,11 @@ create_cfg_object=function(pat_id,lesion_path,out_path,
     file.remove(paste0(extdata,"/Tractography_Atlas/All_Tracts.zip"))
   }
 
-  cfg$source_path=system.file("extdata","Tractography_Atlas",package="LQT")
+  cfg$source_path=rep(system.file("extdata","Tractography_Atlas",package="LQT"),num_subs)
 
   if(!is.null(dsi_path)){
     if(file.exists(dsi_path)){
-      cfg$dsi_path=dsi_path
+      cfg$dsi_path=rep(dsi_path,num_subs)
     }else{
       stop("Specified path to dsi_studio ('dsi_path') does not exist.\n
            If it is already installed, please specify the correct path in the function call.\n
@@ -75,7 +82,7 @@ create_cfg_object=function(pat_id,lesion_path,out_path,
   }else{
     checkdsi='/Applications/dsi_studio.app/Contents/MacOS/dsi_studio'
     if(file.exists(checkdsi)){
-      cfg$dsi_path=checkdsi
+      cfg$dsi_path=rep(checkdsi,num_subs)
     }else{
       stop("Cannot find path to dsi_studio.\n
            If it is already installed, please specify the correct path in the function call.\n
@@ -85,10 +92,10 @@ create_cfg_object=function(pat_id,lesion_path,out_path,
 
   if(!is.null(parcel_path)){
     if(file.exists(parcel_path) & !grepl("extdata",parcel_path)){
-      cfg$parcel_path=parcel_path
+      cfg$parcel_path=rep(parcel_path,num_subs)
     }else if(file.exists(parcel_path) & grepl("extdata",parcel_path)){
-      cfg$parcel_path=parcel_path
-      t=read.csv(gsub(".nii.gz",".csv",parcel_path),header=T)
+      cfg$parcel_path=rep(parcel_path,num_subs)
+      t=read.csv(gsub(".nii.gz",".csv",parcel_path[1]),header=T)
       node_label = t$RegionName
       node_group = t$NetworkID
       parcel_coords = cbind(t$X, t$Y, t$Z)
@@ -96,31 +103,45 @@ create_cfg_object=function(pat_id,lesion_path,out_path,
       stop("Specified 'parcel_path' does not exist.")
     }
   }else{
-    cfg$parcel_path=system.file("extdata","Schaefer_Yeo_Plus_Subcort",
-                                "100Parcels7Networks.nii.gz",package="LQT")
+    cfg$parcel_path=rep(system.file("extdata","Schaefer_Yeo_Plus_Subcort",
+                        "100Parcels7Networks.nii.gz",package="LQT"),num_subs)
     cat("'parcel_path' not specified; defaulting to Schaefer-Yeo's 100 parcel + 7 network + subcortical structures parcellation.")
-    t=read.csv(gsub(".nii.gz",".csv",cfg$parcel_path),header=T)
+    t=read.csv(gsub(".nii.gz",".csv",cfg$parcel_path[1]),header=T)
     node_label = t$RegionName
     node_group = t$NetworkID
     parcel_coords = cbind(t$X, t$Y, t$Z)
   }
 
   if(!is.null(file_suffix)){
-    cfg$file_suffix=file_suffix
+    cfg$file_suffix=rep(file_suffix,num_subs)
   }else if(is.null(file_suffix) & is.null(parcel_path)){
-    cfg$file_suffix="Yeo7100"
+    cfg$file_suffix=rep("Yeo7100",num_subs)
   }else{
-    cfg$file_suffix=tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1)
+    cfg$file_suffix=rep(tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1),num_subs)
   }
 
   if(!con_type%in%c("end","pass")){
     stop("'con_type' must be either 'end' or 'pass'.")
   }
 
-  cfg$con_type=con_type; cfg$sspl_spared_thresh=sspl_spared_thresh
-  cfg$node_label=node_label; cfg$node_group=node_group; cfg$smooth=smooth
-  cfg$parcel_coords=parcel_coords; cfg$delta_sspl_thresh=delta_sspl_thresh
-  cfg$parcel_dmg_thresh=parcel_dmg_thresh; cfg$tract_sdc_thresh=tract_sdc_thresh
+  cfg$con_type=rep(con_type,num_subs)
+  cfg$sspl_spared_thresh=rep(sspl_spared_thresh,num_subs)
+  cfg$smooth=rep(smooth,num_subs)
+  cfg$delta_sspl_thresh=rep(delta_sspl_thresh,num_subs)
+  cfg$parcel_dmg_thresh=rep(parcel_dmg_thresh,num_subs)
+  cfg$tract_sdc_thresh=rep(tract_sdc_thresh,num_subs)
+
+  if(num_subs>1){
+    cfg = lapply(1:num_subs,function(x, cfg){
+      cfg %>% map(x) %>% list_modify(node_label = node_label,
+                                     node_group = node_group,
+                                     parcel_coords = parcel_coords)
+      },cfg)
+  }else{
+    cfg$node_label=node_label
+    cfg$node_group=node_group
+    cfg$parcel_coords=parcel_coords
+  }
 
   return(cfg)
 

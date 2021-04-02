@@ -4,10 +4,12 @@
 \alias{plot_subject_summaries}
 \title{Plot subject-level summaries}
 \usage{
-plot_subject_summaries(cfg)
+plot_subject_summaries(cfg, patient = 1)
 }
 \arguments{
 \item{cfg}{a pre-made cfg structure (as list object).}
+
+\item{patient}{either a string giving a patient ID, or an integer giving the patient index.}
 }
 \value{
 A list object containing plots of parcel damage ('parcel.damage'),

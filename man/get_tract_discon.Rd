@@ -4,10 +4,12 @@
 \alias{get_tract_discon}
 \title{Get tract-based disconnection}
 \usage{
-get_tract_discon(cfg)
+get_tract_discon(cfg, cores = 1)
 }
 \arguments{
 \item{cfg}{a pre-made cfg structure (as list object).}
+
+\item{cores}{an integer value that indicates how many parallel cores the function should be run on.}
 }
 \value{
 A data.frame giving the percent of streamlines in each tract that were disconnected by the lesions (column "Discon")

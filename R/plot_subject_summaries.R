@@ -1,6 +1,7 @@
 #' @title Plot subject-level summaries
 #' @description This function
 #' @param cfg a pre-made cfg structure (as list object).
+#' @param patient either a string giving a patient ID, or an integer giving the patient index.
 #'
 #' @importFrom utils read.csv
 #' @importFrom ggplot2 ggplot scale_fill_manual theme_bw geom_point
@@ -22,7 +23,14 @@
 #'
 #' @export
 
-plot_subject_summaries<-function(cfg){
+plot_subject_summaries<-function(cfg, patient=1){
+
+  if(is.null(cfg$pat_id)){
+    pat_ids = unlist(lapply(cfg,`[[`,1))
+    ind=ifelse(is.character(patient),
+               which(pat_ids==patient),patient)
+    cfg=cfg[[ind]]
+  }
 
   cols=c(park_palette("GeneralGrant")[c(2,3,4,1,8)],
          park_palette("CraterLake")[c(-c(4,6))],

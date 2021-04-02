@@ -5,8 +5,8 @@
 \title{Create cfg structure for analysis}
 \usage{
 create_cfg_object(
-  pat_id,
-  lesion_path,
+  pat_ids,
+  lesion_paths,
   out_path,
   dsi_path = NULL,
   parcel_path = NULL,
@@ -23,9 +23,9 @@ create_cfg_object(
 )
 }
 \arguments{
-\item{pat_id}{a string specifying the given patient's ID (used as prefix for output files)}
+\item{pat_ids}{a vector of strings specifying patients' IDs (used as directories for output files)}
 
-\item{lesion_path}{a string specifying the path to your lesion mask (pre-registered to MNI template)}
+\item{lesion_paths}{a vector of strings specifying the path to patients' lesion masks (pre-registered to MNI template, and corresponding to pat_ids)}
 
 \item{out_path}{a string specifying the path to your desired output directory; patient and atlas result directories will be created here}
 
