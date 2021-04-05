@@ -42,32 +42,7 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
   cfg$out_path=rep(out_path,num_subs)
 
   if(!file.exists(system.file("extdata","Tractography_Atlas",package="LQT"))){
-    extdata=system.file("extdata",package="LQT")
-    cat("Template files have not yet been installed. Downloading them now from Figshare.\nThis may take a few minutes, but will only happen once...\n")
-    download.file("https://ndownloader.figshare.com/files/27368315?private_link=2d830ec228a1c4bdf8aa",
-                  destfile=paste0(extdata,"/HCP842_QA.nii.gz"))
-    download.file("https://ndownloader.figshare.com/files/27368318?private_link=2d830ec228a1c4bdf8aa",
-                  destfile=paste0(extdata,"/MNI152_T1_1mm.nii.gz"))
-    download.file("https://ndownloader.figshare.com/articles/14343335?private_link=66e65823e263a46c8237",
-                  destfile=paste0(extdata,"/Schaefer_Yeo_Plus_Subcort.zip"),mode="wb")
-    unzip(zipfile = paste0(extdata,"/Schaefer_Yeo_Plus_Subcort.zip"),
-          exdir = paste0(extdata,"/Schaefer_Yeo_Plus_Subcort"))
-    file.remove(paste0(extdata,"/Schaefer_Yeo_Plus_Subcort.zip"))
-    download.file("https://ndownloader.figshare.com/articles/14343344?private_link=796fc73e7fc4fa6a1bca",
-                  destfile=paste0(extdata,"/Other_Atlases.zip"),mode="wb")
-    unzip(zipfile = paste0(extdata,"/Other_Atlases.zip"),
-          exdir = paste0(extdata,"/Other_Atlases"))
-    file.remove(paste0(extdata,"/Other_Atlases.zip"))
-    download.file("https://ndownloader.figshare.com/articles/14342426?private_link=4be1178860a7d8dad555",
-                  destfile=paste0(extdata,"/Tractography_Atlas.zip"),mode="wb")
-    unzip(zipfile = paste0(extdata,"/Tractography_Atlas.zip"),
-          exdir = paste0(extdata,"/Tractography_Atlas"))
-    file.remove(paste0(extdata,"/Tractography_Atlas.zip"))
-    download.file("https://ndownloader.figshare.com/articles/14342450?private_link=83a8d620899ed9b198d3",
-                  destfile=paste0(extdata,"/Tractography_Atlas/All_Tracts.zip"),mode="wb")
-    unzip(zipfile = paste0(extdata,"/Tractography_Atlas/All_Tracts.zip"),
-          exdir = paste0(extdata,"/Tractography_Atlas/All_Tracts"))
-    file.remove(paste0(extdata,"/Tractography_Atlas/All_Tracts.zip"))
+    download_templates()
   }
 
   cfg$source_path=rep(system.file("extdata","Tractography_Atlas",package="LQT"),num_subs)
@@ -100,6 +75,8 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
       node_label = t$RegionName
       node_group = t$NetworkID
       parcel_coords = cbind(t$X, t$Y, t$Z)
+    }else if(parcel_path==""){
+      stop("'parcel_path' is empty. You might have used a system.file call before templates were downloaded. If so, re-run the parcel_path call and try again.")
     }else{
       stop("Specified 'parcel_path' does not exist.")
     }
@@ -116,7 +93,12 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
   if(!is.null(file_suffix)){
     cfg$file_suffix=rep(file_suffix,num_subs)
   }else if(is.null(file_suffix) & is.null(parcel_path)){
-    cfg$file_suffix=rep("Yeo7100",num_subs)
+    cfg$file_suffix=rep("Yeo.100.7",num_subs)
+  }else if(is.null(file_suffix) & grepl("Schaefer_Yeo",parcel_path)){
+    parc_nums=tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1)
+    parc_nums=parc_nums %>% gsub("Parcels","\\.",.) %>%
+      gsub("Networks","",.) %>% paste0("Yeo.",.)
+    cfg$file_suffix=parc_nums
   }else{
     cfg$file_suffix=rep(tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1),num_subs)
   }

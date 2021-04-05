@@ -5,10 +5,13 @@ library(LQT)
 ########### Set up cfg structure ###########
 pat_id = "Subject1"
 lesion_path = '/Users/jordandworkin/Desktop/s01/lesion.nii.gz'
+parcel_path = system.file("extdata","Schaefer_Yeo_Plus_Subcort",
+                          "100Parcels17Networks.nii.gz",package="LQT")
 out_path = '/Users/jordandworkin/Desktop/s01'
 
 cfg = create_cfg_object(pat_ids=pat_id,
                         lesion_paths=lesion_path,
+                        parcel_path=parcel_path,
                         out_path=out_path)
 
 ########### Create Damage and Disconnection Measures ###########

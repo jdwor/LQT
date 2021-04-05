@@ -20,13 +20,15 @@ get_parcel_cons<-function(cfg, cores=1){
     get_atlas_sspl(cfg[[1]])
   }else{
     # check whether atlas connectivity matrix exists
-    con.file=list.files(at.path,pattern="connectivity\\.RData$")
+    con.file=list.files(at.path,pattern=paste0(cfg$file_suffix,"_",
+                                               "connectivity\\.RData$"))
     if(length(con.file)==0){
       get_parcel_atlas(cfg[[1]]) # if not, create it
     }
 
     # check whether atlas sspl file exists
-    sspl.file=list.files(at.path,pattern="SSPL_matrix\\.RData$")
+    sspl.file=list.files(at.path,pattern=paste0(cfg$file_suffix,"_",
+                                                "SSPL_matrix\\.RData$"))
     if(length(sspl.file)==0){
       get_atlas_sspl(cfg[[1]]) # if not, create it
     }
