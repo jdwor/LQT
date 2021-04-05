@@ -21,7 +21,7 @@
 #' @importFrom patchwork plot_layout plot_annotation
 #' @importFrom igraph graph_from_adjacency_matrix E
 #' @importFrom network as.matrix.network.edgelist network
-#' @importFrom reshape melt
+#' @importFrom reshape2 melt
 #'
 #' @return A list object containing plots of parcel damage ('parcel.damage'),
 #' tract disconnection ('tract.discon'), inter/intra-parcel structural disconnection ('parcel.discon'),
