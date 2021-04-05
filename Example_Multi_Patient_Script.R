@@ -25,6 +25,6 @@ plot_lqt_subject(cfg, "Subject1", "tract.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 
-
-
+########### Compile Datasets for Analysis ###########
+compile_data(cfg, parallel = T, cores = 2)
 

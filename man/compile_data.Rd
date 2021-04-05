@@ -4,13 +4,15 @@
 \alias{compile_data}
 \title{Compile datasets}
 \usage{
-compile_data(cfg = NULL, out_paths = NULL, parallel = F, cores = 2)
+compile_data(cfg = NULL, out_paths = NULL, cores = 1)
 }
 \arguments{
 \item{cfg}{a pre-made cfg structure (as list object).}
 
 \item{out_paths}{a string specifying the output directory to which LQT files were saved,
 or a vector of strings specifying individual patients' output directories.}
+
+\item{cores}{an integer value that indicates how many parallel cores the function should be run on.}
 }
 \value{
 An .RData file with the suffix .connectivity.RData. This contains the structural disconnection matrix (connectivity);

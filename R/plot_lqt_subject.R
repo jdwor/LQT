@@ -16,7 +16,7 @@
 #' @importFrom ggplot2 theme_bw geom_bar coord_flip scale_alpha aes
 #' @importFrom ggplot2 scale_size_identity scale_fill_identity
 #' @importFrom ggplot2 scale_alpha_identity scale_alpha_continuous
-#' @importFrom ggplot2 aes element_text scale_alpha_manual
+#' @importFrom ggplot2 aes element_text scale_alpha_manual geom_text
 #' @importFrom nationalparkcolors park_palette
 #' @importFrom patchwork plot_layout plot_annotation
 #' @importFrom igraph graph_from_adjacency_matrix E

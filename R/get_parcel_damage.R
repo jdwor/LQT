@@ -2,7 +2,7 @@
 #' @description This function uses an MNI-registered lesion file and an MNI-registered brain parcellation
 #' to estimate the amount of damage sustained by each brain region.
 #' @param cfg a pre-made cfg structure (as list object).
-#'@param cores an integer value that indicates how many parallel cores the function should be run on.
+#' @param cores an integer value that indicates how many parallel cores the function should be run on.
 #'
 #' @importFrom neurobase readnii writenii
 #' @importFrom utils write.csv

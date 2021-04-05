@@ -3,10 +3,12 @@
 #' @param cfg a pre-made cfg structure (as list object).
 #' @param out_paths a string specifying the output directory to which LQT files were saved,
 #' or a vector of strings specifying individual patients' output directories.
+#' @param cores an integer value that indicates how many parallel cores the function should be run on.
 #'
 #' @importFrom neurobase readnii writenii
 #' @importFrom utils read.csv
 #' @importFrom reshape2 melt
+#' @importFrom parallel mclapply
 #'
 #' @return An .RData file with the suffix .connectivity.RData. This contains the structural disconnection matrix (connectivity);
 #' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
@@ -14,7 +16,7 @@
 #'
 #' @export
 
-compile_data<-function(cfg=NULL, out_paths=NULL, parallel=F, cores=2){
+compile_data<-function(cfg=NULL, out_paths=NULL, cores=1){
 
   if(!is.null(cfg) & !is.list(cfg)){
     out_paths = cfg; cfg = NULL
@@ -46,40 +48,40 @@ compile_data<-function(cfg=NULL, out_paths=NULL, parallel=F, cores=2){
   load(file.path(at.path,at.file))
   atlas = connectivity; rm(connectivity)
 
-  parc.damage = ifelse(parallel=T,lapply(pat.paths,pdam),
+  parc.damage = ifelse(cores==1,lapply(pat.paths,pdam),
                        mclapply(pat.paths,pdam,cores=cores))
   parc.damage = do.call(rbind, parc.damage)
   parc.damage = as.data.frame(parc.damage)
   parc.damage = cbind(ID, parc.damage)
 
-  tract.discon = ifelse(parallel=T,lapply(pat.paths,tdis),
+  tract.discon = ifelse(cores==1,lapply(pat.paths,tdis),
                         mclapply(pat.paths,tdis,cores=cores))
   tract.discon = do.call(rbind, tract.discon)
   tract.discon = as.data.frame(tract.discon)
   tract.discon = cbind(ID, tract.discon)
 
-  patnets = ifelse(parallel=T,lapply(pat.paths,p2pnet),
+  patnets = ifelse(cores==1,lapply(pat.paths,p2pnet),
                    mclapply(pat.paths,p2pnet,cores=cores))
 
-  net.discon = ifelse(parallel=T,lapply(patnets,ndis,node_group),
+  net.discon = ifelse(cores==1,lapply(patnets,ndis,node_group),
                       mclapply(patnets,ndis,node_group,cores=cores))
   net.discon = do.call(rbind, net.discon)
   net.discon = as.data.frame(net.discon)
   net.discon = cbind(ID, net.discon)
 
-  parc.discon = ifelse(parallel=T,lapply(patnets,pdis),
+  parc.discon = ifelse(cores==1,lapply(patnets,pdis),
                        mclapply(patnets,pdis,cores=cores))
   parc.discon = do.call(rbind, parc.discon)
   parc.discon = as.data.frame(parc.discon)
   parc.discon = cbind(ID, parc.discon)
 
-  net2net.discon = ifelse(parallel=T,lapply(patnets,n2ndis,node_group),
+  net2net.discon = ifelse(cores==1,lapply(patnets,n2ndis,node_group),
                           mclapply(patnets,n2ndis,node_group,cores=cores))
   net2net.discon = do.call(rbind, net2net.discon)
   net2net.discon = as.data.frame(net2net.discon)
   net2net.discon = cbind(ID, net2net.discon)
 
-  parc2parc.discon = ifelse(parallel=T,lapply(patnets,p2pdis),
+  parc2parc.discon = ifelse(cores==1,lapply(patnets,p2pdis),
                             mclapply(patnets,p2pdis,cores=cores))
   parc2parc.discon = do.call(rbind, parc2parc.discon)
   parc2parc.discon = as.data.frame(parc2parc.discon)
