@@ -79,8 +79,11 @@ get_parcel_discon<-function(cfg, cores=1){
     colnames(local)[-1]=cfg$node_label
     file.remove(netfile)
 
-    save(global,local,file=gsub("\\.txt","\\.RData",netfile))
-    save(disconnectivity,node_label,node_group,file=gsub("\\.mat","\\.RData",matfile))
+    save(global,local,file=paste0(pd.path,"/",cfg$pat_id,"_",
+                                  cfg$file_suffix,"_network_measures.RData"))
+    save(disconnectivity,node_label,node_group,
+         file=paste0(pd.path,"/",cfg$pat_id,"_",
+                     cfg$file_suffix,"_disconnectivity.RData"))
 
     # load atlas SC matrix
     pat_con=disconnectivity; rm(disconnectivity)

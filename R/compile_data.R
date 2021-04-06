@@ -58,8 +58,7 @@ compile_data<-function(cfg=NULL, out_paths=NULL, cores=1){
   tract.discon = as.data.frame(tract.discon)
   tract.discon = cbind(ID, tract.discon)
 
-  patnets = ifelse(cores==1,lapply(pat.paths,p2pnet),
-                   mclapply(pat.paths,p2pnet,mc.cores=cores))
+  patnets = mclapply(pat.paths,p2pnet,mc.cores=cores)
 
   net.discon = mclapply(patnets,ndis,node_group,mc.cores=cores)
   net.discon = do.call(rbind, net.discon)
