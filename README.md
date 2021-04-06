@@ -28,7 +28,10 @@ Status](https://travis-ci.com/jdwor/LQT.svg?token=rLYL5VRxjrkzYHqLNKBX&branch=ma
 
 Below is a description of the included functions and their usage,
 alongside examples of how an analysis would be run from beginning to
-end.
+end. The repository also contains two example files
+(“Example\_Multi\_Patient\_Script.R” and
+“Example\_Single\_Patient\_Script.R”) that can be downloaded, edited,
+and run locally.
 
 ### create\_cfg\_object
 

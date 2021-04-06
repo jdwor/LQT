@@ -19,7 +19,7 @@ devtools::install_github('jdwor/LQT')
 
 ## Usage
 
-Below is a description of the included functions and their usage, alongside examples of how an analysis would be run from beginning to end.
+Below is a description of the included functions and their usage, alongside examples of how an analysis would be run from beginning to end. The repository also contains two example files ("Example_Multi_Patient_Script.R" and "Example_Single_Patient_Script.R") that can be downloaded, edited, and run locally.
 
 ### create_cfg_object
 
