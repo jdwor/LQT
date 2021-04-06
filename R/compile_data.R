@@ -22,15 +22,15 @@ compile_data<-function(cfg, cores=1){
 
   pat_ids=unlist(lapply(cfg,`[[`,1))
   out_path=cfg[[1]]$out_path
-  file_suffix=cfg[[1]]$file_suffix
+  suffix=cfg[[1]]$file_suffix
   at.path=file.path(out_path,"Atlas")
   pat.paths=file.path(out_path,pat_ids)
 
   ID = pat_ids
-  load(paste0(at.path,'/atlas_',file_suffix,'_connectivity.RData'))
+  load(paste0(at.path,'/atlas_',suffix,'_connectivity.RData'))
   atlas = connectivity; rm(connectivity)
 
-  parc.damage = mclapply(pat.paths,pdam,mc.cores=cores)
+  parc.damage = mclapply(pat.paths,pdam,suffix,mc.cores=cores)
   parc.damage = do.call(rbind, parc.damage)
   parc.damage = as.data.frame(parc.damage)
   parc.damage = cbind(ID, parc.damage)
@@ -40,7 +40,7 @@ compile_data<-function(cfg, cores=1){
   tract.discon = as.data.frame(tract.discon)
   tract.discon = cbind(ID, tract.discon)
 
-  patnets = mclapply(pat.paths,p2pnet,mc.cores=cores)
+  patnets = mclapply(pat.paths,p2pnet,suffix,mc.cores=cores)
 
   net.discon = mclapply(patnets,ndis,atlas,node_group,mc.cores=cores)
   net.discon = do.call(rbind, net.discon)
