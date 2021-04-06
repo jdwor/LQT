@@ -9,28 +9,30 @@
 get_parcel_cons<-function(cfg, cores=1){
 
   if(is.null(cfg$pat_id)){
-    at.path=paste0(cfg[[1]]$out_path,"/Atlas")
+    acfg=cfg[[1]]
+    at.path=paste0(acfg$out_path,"/Atlas")
   }else{
-    at.path=paste0(cfg$out_path,"/Atlas")
+    acfg=cfg
+    at.path=paste0(acfg$out_path,"/Atlas")
   }
 
   if(!dir.exists(at.path)){
     # get parcel SC for atlas
-    get_parcel_atlas(cfg[[1]])
-    get_atlas_sspl(cfg[[1]])
+    get_parcel_atlas(acfg)
+    get_atlas_sspl(acfg)
   }else{
     # check whether atlas connectivity matrix exists
-    con.file=list.files(at.path,pattern=paste0(cfg$file_suffix,"_",
+    con.file=list.files(at.path,pattern=paste0(acfg$file_suffix,"_",
                                                "connectivity\\.RData$"))
     if(length(con.file)==0){
-      get_parcel_atlas(cfg[[1]]) # if not, create it
+      get_parcel_atlas(acfg) # if not, create it
     }
 
     # check whether atlas sspl file exists
-    sspl.file=list.files(at.path,pattern=paste0(cfg$file_suffix,"_",
+    sspl.file=list.files(at.path,pattern=paste0(acfg$file_suffix,"_",
                                                 "SSPL_matrix\\.RData$"))
     if(length(sspl.file)==0){
-      get_atlas_sspl(cfg[[1]]) # if not, create it
+      get_atlas_sspl(acfg) # if not, create it
     }
   }
 

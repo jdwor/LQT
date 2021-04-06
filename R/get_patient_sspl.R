@@ -132,7 +132,7 @@ get_patient_sspl<-function(cfg, cores=1){
     # write out .edge file
     write(round(t(idc_matrix),4),
           paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-                 "indirect_SDC_edge"),
+                 "_indirect_SDC_edge"),
           ncolumns=ncol(idc_matrix),sep="\t")
 
     # construct output filename and save

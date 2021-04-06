@@ -7,7 +7,7 @@
 on the paper [“Lesion Quantification Toolkit: A MATLAB software tool for
 estimating grey matter damage and white matter disconnections in
 patients with focal brain
-lesions”](https://www.biorxiv.org/content/10.1101/2020.07.28.225771v1)
+lesions”](https://www.sciencedirect.com/science/article/pii/S2213158221000838)
 by Griffis et al. This package creates data structures necessary for
 applying the method to imaging data, then allows the user to perform the
 analyses, summarize the results, create figures for visualization, and
