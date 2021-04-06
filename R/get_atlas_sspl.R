@@ -18,8 +18,7 @@ get_atlas_sspl<-function(cfg){
   }
 
   # find and load SC matrix file
-  atlas_file = list.files(at.path,pattern="connectivity\\.RData$")
-  load(paste0(at.path,"/",atlas_file))
+  load(paste0(at.path,'/atlas_',cfg$file_suffix,'_connectivity.RData'))
 
   # get SSPLs for atlas
   graph = graph_from_adjacency_matrix(connectivity,mode="undirected")
