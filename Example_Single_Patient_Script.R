@@ -4,10 +4,10 @@ library(LQT)
 
 ########### Set up cfg structure ###########
 pat_id = "Subject1"
-lesion_path = '/Users/jordandworkin/Desktop/s01/lesion.nii.gz'
+lesion_path = "/Users/JaneGoodall/Study/Images/Subject1/lesion_mask.nii.gz"
 parcel_path = system.file("extdata","Schaefer_Yeo_Plus_Subcort",
-                          "100Parcels17Networks.nii.gz",package="LQT")
-out_path = '/Users/jordandworkin/Desktop/s01'
+                          "100Parcels7Networks.nii.gz",package="LQT")
+out_path = "/Users/JaneGoodall/Study/Results"
 
 cfg = create_cfg_object(pat_ids=pat_id,
                         lesion_paths=lesion_path,

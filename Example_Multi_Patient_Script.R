@@ -4,10 +4,12 @@ library(LQT)
 
 ########### Set up cfg structure ###########
 pat_ids = c("Subject1","Subject2","Subject3","Subject4")
-lesion_paths = rep('/Users/jordandworkin/Desktop/s01/lesion.nii.gz',4)
+lesion_paths = file.path('/Users/JaneGoodall/Study/Images/',
+                         c("Subject1","Subject2","Subject3","Subject4"),
+                         "lesion_mask.nii.gz")
 parcel_path = system.file("extdata","Schaefer_Yeo_Plus_Subcort",
-                          "100Parcels17Networks.nii.gz",package="LQT")
-out_path = '/Users/jordandworkin/Desktop/s01'
+                          "100Parcels7Networks.nii.gz",package="LQT")
+out_path = '/Users/JaneGoodall/Study/Results'
 
 cfg = create_cfg_object(pat_ids=pat_ids,
                         lesion_paths=lesion_paths,
@@ -30,4 +32,4 @@ plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 
 ########### Compile Datasets for Analysis ###########
 data = compile_data(cfg, cores = 2)
-list2env(data); rm(data)
+list2env(data, .GlobalEnv); rm(data)
