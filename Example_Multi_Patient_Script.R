@@ -1,4 +1,4 @@
-## Example single patient script
+## Example mutli-patient script
 
 library(LQT)
 
@@ -17,11 +17,11 @@ cfg = create_cfg_object(pat_ids=pat_ids,
                         out_path=out_path)
 
 ########### Create Damage and Disconnection Measures ###########
-# Get parcel damage for patient
+# Get parcel damage for patients
 get_parcel_damage(cfg, cores=2)
-# Get tract SDC for patient
+# Get tract SDC for patients
 get_tract_discon(cfg, cores=2)
-# Get parcel SDC and SSPL measures for patient
+# Get parcel SDC and SSPL measures for patients
 get_parcel_cons(cfg, cores=2)
 
 ########### Build and View Summary Plots ###########
@@ -33,3 +33,4 @@ plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 ########### Compile Datasets for Analysis ###########
 data = compile_data(cfg, cores = 2)
 list2env(data, .GlobalEnv); rm(data)
+

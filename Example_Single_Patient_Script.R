@@ -23,11 +23,8 @@ get_tract_discon(cfg)
 get_parcel_cons(cfg)
 
 ########### Build and View Summary Plots ###########
-plots = plot_subject_summaries(cfg)
-plots$parcel.damage / plots$tract.discon
-plots$parcel.discon
-plots$parcel.sspl
-
-
-
+plot_lqt_subject(cfg, "parcel.damage")
+plot_lqt_subject(cfg, "tract.discon")
+plot_lqt_subject(cfg, "parcel.discon")
+plot_lqt_subject(cfg, "parcel.sspl")
 
