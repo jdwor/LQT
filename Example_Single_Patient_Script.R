@@ -2,7 +2,7 @@
 
 library(LQT)
 
-########### Set up cfg structure ###########
+########### Set up config structure ###########
 pat_id = "Subject1"
 lesion_path = "/Users/JaneGoodall/Study/Images/Subject1/lesion_mask.nii.gz"
 parcel_path = system.file("extdata","Schaefer_Yeo_Plus_Subcort",

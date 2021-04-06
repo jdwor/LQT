@@ -2,7 +2,7 @@
 
 library(LQT)
 
-########### Set up cfg structure ###########
+########### Set up config structure ###########
 pat_ids = c("Subject1","Subject2","Subject3","Subject4")
 lesion_paths = file.path('/Users/JaneGoodall/Study/Images/',
                          c("Subject1","Subject2","Subject3","Subject4"),
