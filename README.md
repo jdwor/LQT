@@ -170,7 +170,7 @@ list2env(data, .GlobalEnv); rm(data)
 
 <p align="center">
 
-<img src="ims/Example_Datasets.png" width="60%"/>
+<img src="ims/Example_Datasets.png" width="70%"/>
 
 </p>
 

@@ -92,7 +92,7 @@ list2env(data, .GlobalEnv); rm(data)
 ```
 
 <p align="center">
-<img src="ims/Example_Datasets.png" width="60%"/>
+<img src="ims/Example_Datasets.png" width="70%"/>
 </p>
 
 There you have it! Good luck with your research, and don't hesitate to email me at jordan.dworkin [at] nyspi [dot] columbia [dot] edu if you have any questions about the package.
