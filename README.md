@@ -136,7 +136,11 @@ plot_lqt_subject(cfg, "Subject1", "parcel.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 ```
 
-<img src="ims/Example_Figures.png" width="100%" align="center" />
+<p align="center">
+
+<img src="ims/Example_Figures.png" width="100%"/>
+
+</p>
 
 ### compile\_data
 
@@ -164,6 +168,12 @@ data = compile_data(cfg, cores = 2)
 list2env(data, .GlobalEnv); rm(data)
 ```
 
-There you have it\! Feel free to reach out to
-jordan.dworkin\[at\]nyspi\[dot\]columbia\[dot\]edu if you have any
-questions about the package.
+<p align="center">
+
+<img src="ims/Example_Datasets.png" width="60%"/>
+
+</p>
+
+There you have it\! Good luck with your research, and don’t hesitate to
+email me at jordan.dworkin \[at\] nyspi \[dot\] columbia \[dot\] edu if
+you have any questions about the package.
