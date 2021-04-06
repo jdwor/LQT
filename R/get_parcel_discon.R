@@ -158,7 +158,8 @@ get_parcel_discon<-function(cfg, cores=1){
     con_file = list.files(pd.path, pattern="\\.tdi\\.nii\\.gz$")
     pat_con = readnii(paste0(pd.path,"/",con_file))
 
-    atlas_file = list.files(at.path, pattern="\\.tdi\\.nii\\.gz$")
+    atlas_file = paste0(at.path,"/atlas_",cfg$file_suffix,
+                        ".trk.gz.tdi.nii.gz$")
     atlas_con = readnii(paste0(at.path,"/",atlas_file))
 
     writenii(pat_con, paste0(dm.path,"/",con_file))
