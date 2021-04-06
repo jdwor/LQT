@@ -98,7 +98,7 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
     parc_nums=tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1)
     parc_nums=parc_nums %>% gsub("Parcels","\\.",.) %>%
       gsub("Networks","",.) %>% paste0("Yeo.",.)
-    cfg$file_suffix=parc_nums
+    cfg$file_suffix=rep(parc_nums,num_subs)
   }else{
     cfg$file_suffix=rep(tail(strsplit(parcel_path,"/|\\.nii|\\.nii\\.gz")[[1]],1),num_subs)
   }
