@@ -19,5 +19,5 @@ n2ndis = function(x, atlas, groups){
 
   net2net.discon = matrix(discon ,nrow=1)
   colnames(net2net.discon)=rownames(pat)
-  return(parc2parc.discon)
+  return(net2net.discon)
 }

@@ -30,4 +30,4 @@ plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 
 ########### Compile Datasets for Analysis ###########
 data = compile_data(cfg, cores = 2)
-
+list2env(data); rm(data)

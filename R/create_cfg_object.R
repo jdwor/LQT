@@ -76,7 +76,7 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
       node_group = t$NetworkID
       parcel_coords = cbind(t$X, t$Y, t$Z)
     }else if(parcel_path==""){
-      stop("'parcel_path' is empty. You might have used a system.file call before templates were downloaded. If so, re-run the parcel_path call and try again.")
+      stop("\n\n'parcel_path' is empty. You might have used a system.file call before templates were downloaded. If so, re-run the parcel_path call and try again.")
     }else{
       stop("Specified 'parcel_path' does not exist.")
     }

@@ -60,22 +60,22 @@ compile_data<-function(cfg=NULL, out_paths=NULL, cores=1){
 
   patnets = mclapply(pat.paths,p2pnet,mc.cores=cores)
 
-  net.discon = mclapply(patnets,ndis,node_group,mc.cores=cores)
+  net.discon = mclapply(patnets,ndis,atlas,node_group,mc.cores=cores)
   net.discon = do.call(rbind, net.discon)
   net.discon = as.data.frame(net.discon)
   net.discon = cbind(ID, net.discon)
 
-  parc.discon = mclapply(patnets,pdis,mc.cores=cores)
+  parc.discon = mclapply(patnets,pdis,atlas,mc.cores=cores)
   parc.discon = do.call(rbind, parc.discon)
   parc.discon = as.data.frame(parc.discon)
   parc.discon = cbind(ID, parc.discon)
 
-  net2net.discon = mclapply(patnets,n2ndis,node_group,mc.cores=cores)
+  net2net.discon = mclapply(patnets,n2ndis,atlas,node_group,mc.cores=cores)
   net2net.discon = do.call(rbind, net2net.discon)
   net2net.discon = as.data.frame(net2net.discon)
   net2net.discon = cbind(ID, net2net.discon)
 
-  parc2parc.discon = mclapply(patnets,p2pdis,mc.cores=cores)
+  parc2parc.discon = mclapply(patnets,p2pdis,atlas,mc.cores=cores)
   parc2parc.discon = do.call(rbind, parc2parc.discon)
   parc2parc.discon = as.data.frame(parc2parc.discon)
   parc2parc.discon = cbind(ID, parc2parc.discon)
