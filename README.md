@@ -142,24 +142,22 @@ plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 ### compile\_data
 
 This function reads in completed LQT results files and compiles
-analysis-ready datasets. The user can either provide the relevant config
-object (cfg), or a manually curated list of directories in which
-subjects’ results have been saved (out\_paths). The user can
-additionally specify the number of cores for the function to be run on,
-though the function should be fairly quick even on a single core. The
-function returns a list object containing several analysis-ready
-datasets, in which rows represent patients and columns represent lesion
-metrics: “parc.damage”, which gives percent regional parcel damage
-across subjects; “tract.discon”, which gives percent tract disconnection
-across subjects; “net.discon”, which gives the percent disconnection for
-each parcel group or network across its edges; “parc.discon”, which
-gives the percent disconnection for each individual parcel across its
-edges; “net2net.discon”, which gives the percent disconnection of each
-pairwise network-to-network edge; “parc2parc.discon”, which gives the
-percent disconnection of each pairwise parcel-to-parcel edge. These
-datasets each contain an ID column to facilitate merging with clinical
-data. Note that some of these datasets will have many columns, and some
-columns might have very little (or no) variance across subjects.
+analysis-ready datasets. The user provides the relevant config object
+(cfg), and can additionally specify the number of cores for the function
+to be run on. The function returns a list object containing several
+analysis-ready datasets, in which rows represent patients and columns
+represent lesion metrics: “parc.damage”, which gives percent regional
+parcel damage across subjects; “tract.discon”, which gives percent tract
+disconnection across subjects; “net.discon”, which gives the percent
+disconnection for each parcel group or network across its edges;
+“parc.discon”, which gives the percent disconnection for each
+individual parcel across its edges; “net2net.discon”, which gives the
+percent disconnection of each pairwise network-to-network edge;
+“parc2parc.discon”, which gives the percent disconnection of each
+pairwise parcel-to-parcel edge. These datasets each contain an ID column
+to facilitate merging with clinical data. Note that some of these
+datasets will have many columns, and some columns might have very little
+(or no) variance across subjects.
 
 ``` r
 ########### Compile Datasets for Analysis ###########

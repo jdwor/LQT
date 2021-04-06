@@ -1,8 +1,6 @@
 #' @title Compile datasets
 #' @description This function takes completed LQT files and compiles analysis-ready datasets
 #' @param cfg a pre-made cfg structure (as list object).
-#' @param out_paths a string specifying the output directory to which LQT files were saved,
-#' or a vector of strings specifying individual patients' output directories.
 #' @param cores an integer value that indicates how many parallel cores the function should be run on.
 #'
 #' @importFrom neurobase readnii writenii
