@@ -10,9 +10,13 @@
 #' @importFrom reshape2 melt
 #' @importFrom parallel mclapply
 #'
-#' @return An .RData file with the suffix .connectivity.RData. This contains the structural disconnection matrix (connectivity);
-#' an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
-#' an .RData file with the suffix _percent_parcel_mats.RData. This file contains a disconnection adjacency matrix (pct_sdc_matrix) and a spared connection adjacency matrix (pct_spared_sc_matrix);
+#' @return A list object containing several analysis-ready datasets, in which rows represent patients and columns represent lesion metrics:
+#' "parc.damage", which gives percent regional parcel damage across subjects;
+#' "tract.discon", which gives percent tract disconnection across subjects;
+#' "net.discon", which gives the percent disconnection for each parcel group or network across its edges;
+#' "parc.discon", which gives the percent disconnection for each individual parcel across its edges;
+#' "net2net.discon", which gives the percent disconnection of each pairwise network-to-network edge;
+#' "parc2parc.discon", which gives the percent disconnection of each pairwise parcel-to-parcel edge.
 #'
 #' @export
 

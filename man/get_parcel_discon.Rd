@@ -12,7 +12,7 @@ get_parcel_discon(cfg, cores = 1)
 \item{cores}{an integer value that indicates how many parallel cores the function should be run on.}
 }
 \value{
-An .RData file with the suffix .connectivity.RData. This contains the structural disconnection matrix (disconnectivity);
+An .RData file with the suffix .disconnectivity.RData. This contains the structural disconnection matrix (disconnectivity);
 an .RData file with the suffix .network_measures.RData, which contains various graph measures for the SC matrix;
 an .RData file with the suffix _percent_parcel_mats.RData. This file contains a disconnection adjacency matrix (pct_sdc_matrix) and a spared connection adjacency matrix (pct_spared_sc_matrix);
 a .txt file with the suffix .connectogram.txt. This file contains a connectogram that can be viewed on http://mkweb.bcgsc.ca/tableviewer/visualize/ by checking the two size options in step 2A (col with row size, row with col size);

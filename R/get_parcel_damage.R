@@ -8,9 +8,8 @@
 #' @importFrom utils write.csv
 #' @importFrom pbmcapply pbmclapply
 #'
-#' @return A list containing
-#' 1) damage.map (a nifti image in which voxel values correspond to the % of the associated parcel damaged by lesion),
-#' and 2) damage.vec (a vector with % damage values for each parcel in the brain parcellation).
+#' @return A .nii.gz file with the suffix _percent_damage.nii.gz. This file contains a damage.map in which voxel values correspond to the % of the associated parcel damaged by lesion;
+#' a .csv file with the suffix _percent_damage.csv. This file contains a data frame with % damage values for each parcel in the given parcellation.
 #'
 #' @export
 

@@ -1,5 +1,5 @@
 #' @title Plot subject-level summaries
-#' @description This function
+#' @description This function constructs subject-level visualizations of lesion-based damage and disconnection
 #' @param cfg a pre-made cfg structure (as list object).
 #' @param subject either a string giving a subject ID, or an integer giving the subject index.
 #' @param type a string specifying the desired plot type. Options are "parcel.damage", which gives a barplot of percent parcel damage;

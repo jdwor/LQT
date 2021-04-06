@@ -24,5 +24,5 @@ tract disconnection ('tract.discon'), inter/intra-parcel structural disconnectio
 and changes in inter-parcel structural shortest path lengths ('parcel.sspl').
 }
 \description{
-This function
+This function constructs subject-level visualizations of lesion-based damage and disconnection
 }

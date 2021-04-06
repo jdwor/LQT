@@ -9,7 +9,7 @@
 #' @importFrom utils read.table write.csv
 #' @importFrom pbmcapply pbmclapply
 #'
-#' @return A data.frame giving the percent of streamlines in each tract that were disconnected by the lesions (column "Discon")
+#' @return A .csv file giving the percent of streamlines in each tract that were disconnected by the lesions (column "Discon")
 #' and the associated tract names (column "Tract").
 #'
 #' @export
