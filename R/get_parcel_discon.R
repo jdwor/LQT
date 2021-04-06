@@ -87,7 +87,7 @@ get_parcel_discon<-function(cfg, cores=1){
 
     # load atlas SC matrix
     pat_con=disconnectivity; rm(disconnectivity)
-    load(paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.RData")))
+    load(paste0(at.path,'/atlas_',cfg$file_suffix,'_connectivity.RData'))
     atlas_con=connectivity; rm(connectivity)
 
     # convert patient matrix to % disconnection and save
