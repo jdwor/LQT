@@ -20,36 +20,15 @@
 #'
 #' @export
 
-compile_data<-function(cfg=NULL, out_paths=NULL, cores=1){
+compile_data<-function(cfg, cores=1){
 
-  if(!is.null(cfg) & !is.list(cfg)){
-    out_paths = cfg; cfg = NULL
-  }
-  if(is.null(cfg) & is.null(out_paths)){
-    stop("Either 'cfg' or 'out_paths' must be specified.")
-  }else if(!is.null(cfg)){
-    pat_ids=unlist(lapply(cfg,`[[`,1))
-    out_path=cfg[[1]]$out_path
-    at.path=file.path(out_path,"Atlas")
-    pat.paths=file.path(out_path,pat_ids)
-  }else{
-    if(length(out_paths)==1){
-      pat_ids=list.dirs(out_path,recursive=F)
-      pat_ids=pat_ids[pat_ids!="Atlas"]
-      at.path=file.path(out_path,"Atlas")
-      pat.paths=file.path(out_path,pat_ids)
-    }else{
-      which.atlas=grepl("/Atlas",out_paths)
-      if(sum(which.atlas)==0){stop("Path to 'Atlas' folder must be included in 'out_paths.")}
-      at.path=out_paths[which.atlas]
-      pat.paths=out_paths[!which.atlas]
-    }
-  }
+  pat_ids=unlist(lapply(cfg,`[[`,1))
+  out_path=cfg[[1]]$out_path
+  at.path=file.path(out_path,"Atlas")
+  pat.paths=file.path(out_path,pat_ids)
 
   ID = pat_ids
-  at.file = list.files(at.path)
-  at.file = at.file[grepl("connectivity.RData",at.file)]
-  load(file.path(at.path,at.file))
+  load(paste0(at.path,'/atlas_',cfg$file_suffix,'_connectivity.RData'))
   atlas = connectivity; rm(connectivity)
 
   parc.damage = mclapply(pat.paths,pdam,mc.cores=cores)

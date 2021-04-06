@@ -133,8 +133,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     load(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
                 "_percent_parcel_mats.RData"))
     at.path=paste0(cfg$out_path,"/Atlas")
-    at.file=list.files(at.path,pattern="connectivity\\.RData$")
-    load(paste0(at.path,"/",at.file))
+    load(paste0(at.path,'/atlas_',cfg$file_suffix,'_connectivity.RData'))
 
     at_con=connectivity; rm(connectivity)
     pat_sdc=at_con*pct_sdc_matrix/100
