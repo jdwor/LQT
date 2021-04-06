@@ -14,14 +14,13 @@ plot_lqt_subject(cfg, subject = 1, type = NULL)
 \item{type}{a string specifying the desired plot type. Options are "parcel.damage", which gives a barplot of percent parcel damage;
 "tract.discon", which gives a barplot of percent tract-level disconnection;
 "parcel.discon", which gives a barplot and brain network plots showing parcel-level disconnection;
-"parcel.sspl", which gives a barplot and brain network plots showing parcel-level structural shortest path length increases;
-"group.to.group", which gives an adjacency matrix of pairwise percent disconnection between parcel clusters;
-and "parcel.to.parcel", which gives an adjacency matrix of pairwise percent disconnection between specific parcels.}
+and "parcel.sspl", which gives a barplot and brain network plots showing parcel-level structural shortest path length increases.}
 }
 \value{
-A list object containing plots of parcel damage ('parcel.damage'),
-tract disconnection ('tract.discon'), inter/intra-parcel structural disconnection ('parcel.discon'),
-and changes in inter-parcel structural shortest path lengths ('parcel.sspl').
+A plot object visualizing either  parcel damage (type = 'parcel.damage'),
+tract disconnection (type = 'tract.discon'), i
+nter/intra-parcel structural disconnection (type = 'parcel.discon'),
+or changes in inter-parcel structural shortest path lengths (type = 'parcel.sspl').
 }
 \description{
 This function constructs subject-level visualizations of lesion-based damage and disconnection

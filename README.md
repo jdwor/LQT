@@ -124,12 +124,9 @@ their numeric index) as well as the plot type. Plot type options are
 “parcel.damage”, which gives a barplot of percent parcel damage;
 “tract.discon”, which gives a barplot of percent tract-level
 disconnection; “parcel.discon”, which gives a barplot and brain network
-plots showing parcel-level disconnection; “parcel.sspl”, which gives a
-barplot and brain network plots showing parcel-level structural shortest
-path length increases; “group.to.group”, which gives an adjacency matrix
-of pairwise percent disconnection between parcel clusters; and
-“parcel.to.parcel”, which gives an adjacency matrix of pairwise
-percent disconnection between specific parcels.
+plots showing parcel-level disconnection; and “parcel.sspl”, which gives
+a barplot and brain network plots showing parcel-level structural
+shortest path length increases.
 
 ``` r
 ########### Build and View Summary Plots ###########
