@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_cfg_object.R
 \name{create_cfg_object}
 \alias{create_cfg_object}
-\title{Create cfg structure for analysis}
+\title{Create configuration (cfg) structure for analysis}
 \usage{
 create_cfg_object(
   pat_ids,
