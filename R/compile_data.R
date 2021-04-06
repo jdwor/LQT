@@ -22,11 +22,12 @@ compile_data<-function(cfg, cores=1){
 
   pat_ids=unlist(lapply(cfg,`[[`,1))
   out_path=cfg[[1]]$out_path
+  file_suffix=cfg[[1]]$file_suffix
   at.path=file.path(out_path,"Atlas")
   pat.paths=file.path(out_path,pat_ids)
 
   ID = pat_ids
-  load(paste0(at.path,'/atlas_',cfg$file_suffix,'_connectivity.RData'))
+  load(paste0(at.path,'/atlas_',file_suffix,'_connectivity.RData'))
   atlas = connectivity; rm(connectivity)
 
   parc.damage = mclapply(pat.paths,pdam,mc.cores=cores)

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Lesion Quantification Toolkit (LQT) <img src="icon256.png" height="150px" width="150px" align="right" />
+# Lesion Quantification Toolkit (LQT) <img src="ims/icon256.png" height="150px" width="150px" align="right" />
 
 `LQT` is an R implementation of the lesion quantification toolkit, based
 on the paper [“Lesion Quantification Toolkit: A MATLAB software tool for
@@ -135,6 +135,8 @@ plot_lqt_subject(cfg, "Subject1", "tract.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 ```
+
+<img src="ims/Example_Figures.png" width="100%" align="center" />
 
 ### compile\_data
 

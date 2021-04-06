@@ -3,7 +3,7 @@ output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-# Lesion Quantification Toolkit (LQT) <img src="icon256.png" height="150px" width="150px" align="right" />
+# Lesion Quantification Toolkit (LQT) <img src="ims/icon256.png" height="150px" width="150px" align="right" />
 
 `LQT` is an R implementation of the lesion quantification toolkit, based on the paper ["Lesion Quantification Toolkit: A MATLAB software tool for estimating grey matter damage and white matter disconnections in patients with focal brain lesions"](https://www.sciencedirect.com/science/article/pii/S2213158221000838) by Griffis et al. This package creates data structures necessary for applying the method to imaging data, then allows the user to perform the analyses, summarize the results, create figures for visualization, and compile datasets for research.
 
@@ -76,6 +76,8 @@ plot_lqt_subject(cfg, "Subject1", "tract.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.discon")
 plot_lqt_subject(cfg, "Subject1", "parcel.sspl")
 ```
+
+<img src="ims/Example_Figures.png" width="100%" align="center" />
 
 ### compile_data 
 
