@@ -1,4 +1,4 @@
-#' @title Create cfg structure for analysis
+#' @title Create configuration (cfg) structure for analysis
 #' @description This function compiles the relevant settings and file paths to be fed into analysis functions.
 #' @param pat_ids a vector of strings specifying patients' IDs (used as directories for output files)
 #' @param lesion_paths a vector of strings specifying the path to patients' lesion masks (pre-registered to MNI template, and corresponding to pat_ids)
