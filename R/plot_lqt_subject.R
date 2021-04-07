@@ -15,7 +15,6 @@
 #' @importFrom ggplot2 scale_size_identity scale_fill_identity
 #' @importFrom ggplot2 scale_alpha_identity scale_alpha_continuous
 #' @importFrom ggplot2 aes element_text scale_alpha_manual geom_text
-#' @importFrom nationalparkcolors park_palette
 #' @importFrom patchwork plot_layout plot_annotation
 #' @importFrom igraph graph_from_adjacency_matrix E
 #' @importFrom network as.matrix.network.edgelist network
@@ -42,11 +41,12 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     cfg=cfg[[ind]]
   }
 
-  cols=c(park_palette("GeneralGrant")[c(2,3,4,1,8)],
-         park_palette("CraterLake")[c(-c(4,6))],
-         park_palette("Zion")[c(4,3,1,5,2)],
-         park_palette("DeathValley"),
-         park_palette("BlueRidgePkwy"))
+  cols=c("#F3AE6D","#516888","#C9DACA","#FBE697","#802729",
+         "#7DCCD3","#4E7147","#BE9C9D","#376597","#DBA662",
+         "#C4878C","#F1E3B6","#469BEC","#6D882B","#C9FAFF",
+         "#B23539","#FAB57C","#F7E790","#73652D","#E79498",
+         "#514289","#EC8FA3","#FCBA65","#FAECCF","#8D7F99",
+         "#8C9D57","#163343")
 
   if(type=="parcel.damage"){
     pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
