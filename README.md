@@ -55,7 +55,7 @@ additional visualization and specification options (see
 ``` r
 ########### Set up config structure ###########
 pat_ids = c("Subject1","Subject2","Subject3","Subject4")
-lesion_paths = file.path('/Users/JaneGoodall/Study/Images/',
+lesion_paths = file.path('/Users/JaneGoodall/Study/Images',
                          c("Subject1","Subject2","Subject3","Subject4"),
                          "lesion_mask.nii.gz")
 parcel_path = system.file("extdata","Schaefer_Yeo_Plus_Subcort",
