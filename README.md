@@ -8,16 +8,15 @@ on the paper [“Lesion Quantification Toolkit: A MATLAB software tool for
 estimating grey matter damage and white matter disconnections in
 patients with focal brain
 lesions”](https://www.sciencedirect.com/science/article/pii/S2213158221000838)
-by Griffis et al. According to the authors, the LQT is “a publicly
-available software package for quantifying the structural impacts of
-focal brain lesions. It uses atlas-based approaches to estimate
-parcel-level grey matter lesion loads and multiple measures of white
-matter disconnection severity that include tract-level disconnection
-measures, voxel-wise disconnection maps, and parcel-wise disconnection
-matrices. The toolkit also estimates lesion-induced increases in the
-lengths of the shortest structural paths between parcel pairs, which
-provide information about changes in higher-order structural network
-topology.”
+by Griffis et al. The LQT is “a publicly available software package for
+quantifying the structural impacts of focal brain lesions. It uses
+atlas-based approaches to estimate parcel-level grey matter lesion loads
+and multiple measures of white matter disconnection severity that
+include tract-level disconnection measures, voxel-wise disconnection
+maps, and parcel-wise disconnection matrices. The toolkit also estimates
+lesion-induced increases in the lengths of the shortest structural paths
+between parcel pairs, which provide information about changes in
+higher-order structural network topology.”
 
 The R package creates data structures necessary for applying the methods
 directly to MNI-registered lesion maps from either a single patient or a
