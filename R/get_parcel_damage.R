@@ -7,6 +7,7 @@
 #' @importFrom neurobase readnii writenii
 #' @importFrom utils write.csv
 #' @importFrom pbmcapply pbmclapply
+#' @importFrom RNiftyReg buildAffine applyTransform
 #'
 #' @return A .nii.gz file with the suffix _percent_damage.nii.gz. This file contains a damage.map in which voxel values correspond to the % of the associated parcel damaged by lesion;
 #' a .csv file with the suffix _percent_damage.csv. This file contains a data frame with % damage values for each parcel in the given parcellation.
@@ -22,7 +23,15 @@ get_parcel_damage<-function(cfg, cores=1){
 
   }else{
 
-    lesions = readnii(cfg$lesion_path)
+    lesions_or = readnii(cfg$lesion_path)
+    trans = diag(rbind(lesions_or@srow_x,lesions_or@srow_y,
+                       lesions_or@srow_z)[,1:3])
+    if(!sum(trans)%in%c(0,3)){
+      affine=buildAffine(scales=trans,source=lesions_or)
+      lesions=applyTransform(affine,lesions_or)
+    }else{
+      lesions=lesions_or
+    }
     parcels = readnii(cfg$parcel_path)
 
     # Check if lesion and parcels are the same dimensions
@@ -66,7 +75,7 @@ get_parcel_damage<-function(cfg, cores=1){
       dir.create(pd.path)
     }
 
-    writenii(lesions, paste0(pat.path,"/",cfg$pat_id,"_lesion.nii.gz"))
+    writenii(lesions_or, paste0(pat.path,"/",cfg$pat_id,"_lesion.nii.gz"))
     writenii(pcd_vol, paste0(pd.path,"/",cfg$pat_id,"_",
                              cfg$file_suffix,"_percent_damage.nii.gz"))
     write.csv(pcd_vect,paste0(pd.path,"/",cfg$pat_id,"_",
