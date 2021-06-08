@@ -60,7 +60,7 @@ get_parcel_discon<-function(cfg, cores=1){
                                      ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
                                      ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
                                      cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
-    }error=function(e){
+    },error=function(e){
       suppressWarnings(shell(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
                                      ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
                                      ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
