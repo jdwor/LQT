@@ -55,10 +55,17 @@ get_parcel_discon<-function(cfg, cores=1){
     out_file = paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,'.trk.gz')
 
     # create disconnection matrix, .trk fle, and TDI map
-    out=suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
-                                       ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
-                                       ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
-                                       cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+    out=tryCatch({
+      suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                                     ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
+                                     ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
+                                     cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+    }error=function(e){
+      suppressWarnings(shell(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                                     ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
+                                     ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
+                                     cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+    })
 
     # resave connectivity file (raw streamline counts)
     matfile=paste0(pd.path,"/",list.files(pd.path,pattern="connectivity\\.mat$"))

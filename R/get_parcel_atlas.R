@@ -21,9 +21,17 @@ get_parcel_atlas<-function(cfg){
 
   out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'.trk.gz')
 
-  out=suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
-                ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --output=',out_file,' --connectivity=',cfg$parcel_path,
-                ' --connectivity_type=',cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+  out=tryCatch({
+    suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                                   ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --output=',out_file,
+                                   ' --connectivity=',cfg$parcel_path,' --connectivity_type=',cfg$con_type,
+                                   ' --connectivity_threshold=0 --export=tdi'),intern=T))
+  }error=function(e){
+    suppressWarnings(shell(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                                   ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --output=',out_file,
+                                   ' --connectivity=',cfg$parcel_path,' --connectivity_type=',cfg$con_type,
+                                   ' --connectivity_threshold=0 --export=tdi'),intern=T))
+  })
 
   matfile=paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)
