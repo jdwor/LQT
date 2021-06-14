@@ -94,7 +94,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     subdf2=trac.dis[order,]; subdf2=subdf2[subdf2$Discon>cfg$tract_sdc_thresh,]
     subdf2$Tract=factor(subdf2$Tract,levels=rev(subdf2$Tract))
     subdf2$Pathway=as.character(subdf2$Pathway)
-    cols2=park_palette("Yosemite")
+    cols2=c("#9FC2B2","#DFDED3","#A49A69","#3F5B66","#869144")
 
     ggplot(subdf2,aes(x=Tract,y=Discon,fill=Pathway))+
       geom_bar(stat="identity",alpha=.9,col="black")+
