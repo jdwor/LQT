@@ -126,6 +126,28 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
     cfg$parcel_coords=parcel_coords
   }
 
+  lesion1=readnii(lesion_paths[1])
+  is_mask = check_mask(lesion1)
+  if(!is_mask){
+    lesion_paths_bin=gsub("\\.nii","\\_bin\\.nii",lesion_paths)
+    warning("Lesion masks do not appear to be binary!",immediate. = T)
+    thresh=readline(prompt="Enter a numeric threshold to binarize the masks, or enter 'c' to cancel: ")
+    if(thresh=='c'){
+      stop("Function cancelled, no cfg object created.\nPlease create binary lesion masks and try again.")
+    }else if(!is.na(as.numeric(thresh))){
+      thresh=as.numeric(thresh)
+      for(i in 1:length(lesion_paths)){
+        lesion=readnii(lesion_paths[i])
+        lesion[lesion<=thresh]=0
+        lesion[lesion>thresh]=1
+        writenii(lesion,lesion_paths_bin[i])
+      }
+      cfg$lesion_path=lesion_paths_bin
+    }else{
+      stop("Must enter either a numeric threshold or 'c'.")
+    }
+  }
+
   return(cfg)
 
 }
