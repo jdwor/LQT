@@ -53,7 +53,7 @@ get_tract_discon<-function(cfg, cores=1){
                                        " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
                                        " --output=",out_file," --export=stat"),intern=T))
       },error=function(e){
-        suppressMessages(shell(paste0("! ",cfg$dsi_path," --action=ana --source=",cfg$source_path,"/HCP842_1mm.fib.gz",
+        suppressMessages(shell(paste0(cfg$dsi_path," --action=ana --source=",cfg$source_path,"/HCP842_1mm.fib.gz",
                                        " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
                                        " --output=",out_file," --export=stat"),intern=T))
       })
