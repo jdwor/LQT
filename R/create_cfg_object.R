@@ -22,6 +22,7 @@
 #' @importFrom utils read.csv tail download.file unzip
 #' @importFrom purrr map list_modify
 #' @importFrom dplyr %>%
+#' @importFrom neurobase check_mask
 #'
 #' @return A list structure to be input into downstream analysis functions.
 #'
