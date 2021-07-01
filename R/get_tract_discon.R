@@ -53,9 +53,19 @@ get_tract_discon<-function(cfg, cores=1){
                                        " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
                                        " --output=",out_file," --export=stat"),intern=T))
       },error=function(e){
-        suppressMessages(shell(paste0(cfg$dsi_path," --action=ana --source=",cfg$source_path,"/HCP842_1mm.fib.gz",
-                                       " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
-                                       " --output=",out_file," --export=stat"),intern=T))
+        if(grepl(":",cfg$lesion_path)){
+          drive=paste0(strsplit(cfg$lesion_path,":")[[1]][1],":")
+          fsplit=strsplit(cfg$lesion_path,"/")[[1]]
+          direc=paste(fsplit[-length(fsplit)],collapse="/")
+          lp=tail(fsplit,1)
+          suppressMessages(shell(paste0(drive," &  cd ",direc," & ",cfg$dsi_path," --action=ana --source=",cfg$source_path,"/HCP842_1mm.fib.gz",
+                                        " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",lp,
+                                        " --output=",out_file," --export=stat"),intern=T))
+        }else{
+          suppressMessages(shell(paste0(cfg$dsi_path," --action=ana --source=",cfg$source_path,"/HCP842_1mm.fib.gz",
+                                        " --tract=",cfg$source_path,"/All_Tracts/",my_tracts[i]," --roi=",cfg$lesion_path,
+                                        " --output=",out_file," --export=stat"),intern=T))
+        }
       })
 
       # Create empty text file if it does not exist (necessary because some versions of DSI_Studio don't output anything for null results)

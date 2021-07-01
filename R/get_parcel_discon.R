@@ -61,10 +61,21 @@ get_parcel_discon<-function(cfg, cores=1){
                                      ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
                                      cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
     },error=function(e){
-      suppressWarnings(shell(paste0(cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
-                                     ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
-                                     ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
-                                     cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+      if(grepl(":",cfg$lesion_path)){
+        drive=paste0(strsplit(cfg$lesion_path,":")[[1]][1],":")
+        fsplit=strsplit(cfg$lesion_path,"/")[[1]]
+        direc=paste(fsplit[-length(fsplit)],collapse="/")
+        lp=tail(fsplit,1)
+        suppressWarnings(shell(paste0(drive," &  cd ",direc," & ",cfg$dsi_path,' --action=ana --source=',cfg$source_path,
+                                      '/HCP842_1mm.fib.gz',' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',
+                                      lp,' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
+                                      cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+      }else{
+        suppressWarnings(shell(paste0(cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
+                                      ' --tract=',cfg$source_path,'/all_tracts_1mm.trk.gz',' --roi=',cfg$lesion_path,
+                                      ' --output=',out_file,' --connectivity=',cfg$parcel_path,' --connectivity_type=',
+                                      cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
+      }
     })
 
     # resave connectivity file (raw streamline counts)
