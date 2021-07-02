@@ -54,7 +54,7 @@ if 'pass', they are based on streamline pass-throughs ('end' is more conservativ
 
 \item{tract_sdc_thresh}{a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with percent disconnection below threshold; default = 5)}
 
-\item{smooth}{a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging output file (default = 2)}
+\item{smooth}{a number representing the smoothing kernel FWHM (in voxel units) for smoothing the track density imaging output file (default = 2)}
 }
 \value{
 A list structure to be input into downstream analysis functions.

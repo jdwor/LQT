@@ -6,7 +6,7 @@
 #'
 #' @importFrom R.matlab readMat
 #' @importFrom neurobase readnii writenii
-#' @importFrom fslr fslsmooth
+#' @importFrom aws kernsm
 #' @importFrom pbmcapply pbmclapply
 #'
 #' @return An .RData file with the suffix .disconnectivity.RData. This contains the structural disconnection matrix (disconnectivity);
@@ -192,7 +192,8 @@ get_parcel_discon<-function(cfg, cores=1){
 
     if(!is.null(cfg$smooth)){
       if(cfg$smooth>0){
-        pat_con = fslsmooth(pat_con,sigma=cfg$smooth,retimg=T,verbose=F)
+        sm.im = kernsm(y=pat_con@.Data,h=cfg$smooth,kern="Gaussian",unit="FWHM")
+        pat_con@.Data = sm.im@yhat; rm(sm.im)
         pat_con[pat_con < 0.01] = 0
       }
     }

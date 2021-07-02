@@ -17,7 +17,7 @@
 #' @param delta_sspl_thresh a number between 1 and 100 giving the percentile threshold for displaying SSPL increases in figures (will only display SSPL increases above percentile threshold; default = 90)
 #' @param parcel_dmg_thresh a number between 1 and 100 giving the parcel damage threshold for displaying SSPL increases in figures (will not display SSPL increases for parcels with percent damage greater than or equal to the threshold; default = 100)
 #' @param tract_sdc_thresh a number between 1 and 100 giving the tract disconnection threshold for displaying tracts in figures (will not display data for tracts with percent disconnection below threshold; default = 5)
-#' @param smooth a number representing the sigma (in mm) of the Gaussian kernel for smoothing the track density imaging output file (default = 2)
+#' @param smooth a number representing the smoothing kernel FWHM (in voxel units) for smoothing the track density imaging output file (default = 2)
 #'
 #' @importFrom utils read.csv tail download.file unzip
 #' @importFrom purrr map list_modify
