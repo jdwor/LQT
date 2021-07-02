@@ -47,6 +47,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
          "#B23539","#FAB57C","#F7E790","#73652D","#E79498",
          "#514289","#EC8FA3","#FCBA65","#FAECCF","#8D7F99",
          "#8C9D57","#163343")
+  ag6="#A12A19"
 
   if(type=="parcel.damage"){
     pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
@@ -191,7 +192,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     g1=ggplot(ndata,aes(x=X,y=Y))+coord_fixed(ratio=1)+
       geom_segment(data=edges,aes(x=x1,y=y1,xend=x2,yend=y2,
                                   size=Size,alpha=Damage),
-                   color=park_palette("ArcticGates")[6])+
+                   color=ag6)+
       geom_point(data=ndata,aes(fill=Color),size=2,
                  color="black",shape=21)+
       scale_alpha_continuous(name="Disconnection",
@@ -217,7 +218,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     g3=ggplot(ndata,aes(x=X,y=Z))+coord_fixed(ratio=1)+
       geom_segment(data=edges,aes(x=x1,y=z1,xend=x2,yend=z2,
                                   size=Size,alpha=Damage),
-                   color=park_palette("ArcticGates")[6])+
+                   color=ag6)+
       geom_point(data=ndata,aes(fill=Color),size=2,
                  color="black",shape=21)+
       scale_fill_identity()+scale_alpha(guide="none")+
@@ -239,7 +240,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     g2=ggplot(ndata,aes(x=Y,y=Z))+coord_fixed(ratio=1)+
       geom_segment(data=edges,aes(x=y1,y=z1,xend=y2,yend=z2,
                                   size=Size,alpha=Damage),
-                   color=park_palette("ArcticGates")[6])+
+                   color=ag6)+
       geom_point(data=ndata,aes(fill=Color),size=2,
                  color="black",shape=21)+
       scale_fill_identity()+scale_alpha(guide="none")+
@@ -339,7 +340,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     g1=ggplot(ndata,aes(x=X,y=Y))+coord_fixed(ratio=1)+
       geom_segment(data=edges,aes(x=x1,y=y1,xend=x2,yend=y2,
                                   size=Size,alpha=Damage),
-                   color=park_palette("ArcticGates")[6])+
+                   color=ag6)+
       geom_point(data=ndata,aes(fill=Color),size=2,
                  color="black",shape=21)+
       scale_fill_identity("Parcel Group",guide="legend",
@@ -364,7 +365,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     g3=ggplot(ndata,aes(x=X,y=Z))+coord_fixed(ratio=1)+
       geom_segment(data=edges,aes(x=x1,y=z1,xend=x2,yend=z2,
                                   size=Size,alpha=Damage),
-                   color=park_palette("ArcticGates")[6])+
+                   color=ag6)+
       geom_point(data=ndata,aes(fill=Color),size=2,
                  color="black",shape=21)+
       scale_fill_identity()+
@@ -388,7 +389,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
     g2=ggplot(ndata,aes(x=Y,y=Z))+coord_fixed(ratio=1)+
       geom_segment(data=edges,aes(x=y1,y=z1,xend=y2,yend=z2,
                                   size=Size,alpha=Damage),
-                   color=park_palette("ArcticGates")[6])+
+                   color=ag6)+
       geom_point(data=ndata,aes(fill=Color),size=2,
                  color="black",shape=21)+
       scale_fill_identity()+
