@@ -4,9 +4,9 @@ download_templates=function(){
   extdata=system.file("extdata",package="LQT")
   cat("Template files have not yet been installed. Downloading them now from Figshare.\nThis may take a few minutes, but will only happen once...\n")
   download.file("https://ndownloader.figshare.com/files/27368315?private_link=2d830ec228a1c4bdf8aa",
-                destfile=paste0(extdata,"/HCP842_QA.nii.gz"))
+                destfile=paste0(extdata,"/HCP842_QA.nii.gz"),mode="wb")
   download.file("https://ndownloader.figshare.com/files/27368318?private_link=2d830ec228a1c4bdf8aa",
-                destfile=paste0(extdata,"/MNI152_T1_1mm.nii.gz"))
+                destfile=paste0(extdata,"/MNI152_T1_1mm.nii.gz"),mode="wb")
   download.file("https://ndownloader.figshare.com/articles/14343335?private_link=66e65823e263a46c8237",
                 destfile=paste0(extdata,"/Schaefer_Yeo_Plus_Subcort.zip"),mode="wb")
   unzip(zipfile = paste0(extdata,"/Schaefer_Yeo_Plus_Subcort.zip"),
