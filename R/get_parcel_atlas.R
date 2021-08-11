@@ -14,10 +14,13 @@
 #' @export
 
 get_parcel_atlas<-function(cfg){
-  at.path=paste0(cfg$out_path,"/Atlas")
+  if(is.null(cfg$pat_id)){
+    at.path=paste0(cfg[[1]]$out_path,"/Atlas")
+  }else{
+    at.path=paste0(cfg$out_path,"/Atlas")
+  }
   if(!dir.exists(at.path)){
     dir.create(at.path)
-    Sys.chmod(at.path, "777", use_umask = FALSE)
   }
 
   out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'.trk.gz')
