@@ -21,8 +21,8 @@
 #' @importFrom reshape2 melt
 #'
 #' @return A plot object visualizing either  parcel damage (type = 'parcel.damage'),
-#' tract disconnection (type = 'tract.discon'), i
-#' nter/intra-parcel structural disconnection (type = 'parcel.discon'),
+#' tract disconnection (type = 'tract.discon'),
+#' inter/intra-parcel structural disconnection (type = 'parcel.discon'),
 #' or changes in inter-parcel structural shortest path lengths (type = 'parcel.sspl').
 #'
 #' @export
@@ -118,9 +118,14 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
             panel.border = element_blank(),
             panel.background = element_blank())
   }else if(type=="parcel.discon"){
-    pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
-    parc.dam=read.csv(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-                             "_percent_damage.csv"),header=T)[,-1]
+    if(dir.exists(paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage"))){
+      pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
+      parc.dam=read.csv(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
+                               "_percent_damage.csv"),header=T)[,-1]
+    }else{
+      parc.dam=data.frame(Parcel=cfg$node_label,ParcelGroup=cfg$node_group,
+                          PercentDamage=0)
+    }
     parc.dam$Parcel=gsub(" \\(Right\\)","_R",parc.dam$Parcel)
     parc.dam$Parcel=gsub(" \\(Left\\)","_L",parc.dam$Parcel)
     parc.dam$Parcel=gsub("Lenticular nucleus, p",
@@ -269,9 +274,14 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
                                          colour = '#3B3B3B',
                                          hjust=.14,vjust=1))
   }else if(type=="parcel.sspl"){
-    pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
-    parc.dam=read.csv(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
-                             "_percent_damage.csv"),header=T)[,-1]
+    if(dir.exists(paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage"))){
+      pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Damage")
+      parc.dam=read.csv(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
+                               "_percent_damage.csv"),header=T)[,-1]
+    }else{
+      parc.dam=data.frame(Parcel=cfg$node_label,ParcelGroup=cfg$node_group,
+                          PercentDamage=0)
+    }
     parc.dam$Parcel=gsub(" \\(Right\\)","_R",parc.dam$Parcel)
     parc.dam$Parcel=gsub(" \\(Left\\)","_L",parc.dam$Parcel)
     parc.dam$Parcel=gsub("Lenticular nucleus, p",
@@ -315,7 +325,7 @@ plot_lqt_subject<-function(cfg, subject=1, type=NULL){
             axis.ticks=element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
-            panel.background = element_blank());c
+            panel.background = element_blank())
 
     parc.sspl=apply(perc_d_sspl,1,mean)
     ndata=data.frame(Parcel=parc.dam$Parcel,

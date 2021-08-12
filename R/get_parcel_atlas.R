@@ -23,7 +23,7 @@ get_parcel_atlas<-function(cfg){
     dir.create(at.path)
   }
 
-  out_file = paste0(at.path,'/atlas_',cfg$file_suffix,'.trk.gz')
+  out_file = at.path
 
   out=tryCatch({
     suppressWarnings(system(paste0('! ',cfg$dsi_path,' --action=ana --source=',cfg$source_path,'/HCP842_1mm.fib.gz',
@@ -36,6 +36,10 @@ get_parcel_atlas<-function(cfg){
                                    ' --connectivity=',cfg$parcel_path,' --connectivity_type=',cfg$con_type,
                                    ' --connectivity_threshold=0 --export=tdi'),intern=T))
   })
+
+  oldnames=list.files(at.path, pattern="all_tracts_1mm",full.names=T)
+  newnames=gsub("all_tracts_1mm",paste0('atlas_',cfg$file_suffix),oldnames)
+  file.rename(oldnames,newnames)
 
   matfile=paste0(at.path,"/",list.files(at.path,pattern="connectivity\\.mat$"))
   mat=readMat(matfile)

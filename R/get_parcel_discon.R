@@ -52,7 +52,7 @@ get_parcel_discon<-function(cfg, cores=1){
       dir.create(dm.path)
     }
 
-    out_file = paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,'.trk.gz')
+    out_file = paste0(pd.path)
 
     # create disconnection matrix, .trk fle, and TDI map
     out=tryCatch({
@@ -77,6 +77,10 @@ get_parcel_discon<-function(cfg, cores=1){
                                       cfg$con_type,' --connectivity_threshold=0 --export=tdi'),intern=T))
       }
     })
+
+    oldnames=list.files(pd.path, pattern="all_tracts_1mm",full.names=T)
+    newnames=gsub("all_tracts_1mm",paste0(cfg$pat_id,"_",cfg$file_suffix),oldnames)
+    file.rename(oldnames,newnames)
 
     # resave connectivity file (raw streamline counts)
     matfile=paste0(pd.path,"/",list.files(pd.path,pattern="connectivity\\.mat$"))
@@ -176,7 +180,7 @@ get_parcel_discon<-function(cfg, cores=1){
     con_file = list.files(pd.path, pattern="\\.tdi\\.nii\\.gz$")
     pat_con = readnii(paste0(pd.path,"/",con_file))
 
-    atlas_file = paste0("atlas_",cfg$file_suffix,".trk.gz.tdi.nii.gz")
+    atlas_file = paste0("atlas_",cfg$file_suffix,".tdi.nii.gz")
     atlas_con = readnii(paste0(at.path,"/",atlas_file))
 
     writenii(pat_con, paste0(dm.path,"/",con_file))

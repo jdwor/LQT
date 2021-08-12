@@ -45,7 +45,7 @@ get_tract_discon<-function(cfg, cores=1){
     for(i in 1:num_tracts){
       # output file name
       tract_name = substr(my_tracts[i],1,nchar(my_tracts[i])-7)
-      out_file = paste0(td.path,"/",my_tracts[i])
+      out_file = td.path
 
       # compute tract disconnection
       out=tryCatch({
@@ -69,12 +69,12 @@ get_tract_discon<-function(cfg, cores=1){
       })
 
       # Create empty text file if it does not exist (necessary because some versions of DSI_Studio don't output anything for null results)
-      if(!file.exists(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))){
-        fileConn<-file(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))
+      if(!file.exists(paste0(td.path,"/",tract_name,'.stat.txt'))){
+        fileConn<-file(paste0(td.path,"/",tract_name,'.stat.txt'))
         writeLines("number of tracts\t0", fileConn)
         close(fileConn)
-      }else if(file.info(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))$size==0){
-        fileConn<-file(paste0(td.path,"/",tract_name,'.trk.gz.stat.txt'))
+      }else if(file.info(paste0(td.path,"/",tract_name,'.stat.txt'))$size==0){
+        fileConn<-file(paste0(td.path,"/",tract_name,'.stat.txt'))
         writeLines("number of tracts\t0", fileConn)
         close(fileConn)
       }
@@ -82,8 +82,8 @@ get_tract_discon<-function(cfg, cores=1){
       cat('Progress:',i,'of',num_tracts,'tracts evaluated\r')
     }
 
-    to_remove=list.files(td.path, pattern="\\.trk\\.gz$")
-    if(length(to_remove)>0){file.remove(paste0(td.path,"/",to_remove))}
+    #to_remove=list.files(td.path, pattern="\\.trk\\.gz$")
+    #if(length(to_remove)>0){file.remove(paste0(td.path,"/",to_remove))}
 
     my_stats=list.files(td.path, pattern="\\.txt$")
 
@@ -92,7 +92,7 @@ get_tract_discon<-function(cfg, cores=1){
     for(i in 1:length(my_stats)){
       fid=read.table(paste0(td.path,"/",my_stats[i]),sep="\t")
 
-      tract_name[i] = substr(my_stats[i],1,nchar(my_stats[i])-16)
+      tract_name[i] = substr(my_stats[i],1,nchar(my_stats[i])-9)
       tract_discon[i] = fid$V2[1]
     }
 
