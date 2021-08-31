@@ -59,7 +59,8 @@ compile_data<-function(cfg, cores=1){
 
   parc2parc.discon = mclapply(patnets,p2pdis,atlas,mc.cores=cores)
   parc2parc.discon = do.call(rbind, parc2parc.discon)
-  parc2parc.discon = as.data.frame(parc2parc.discon)
+  allnas = apply(parc2parc.discon, 2, function(x) mean(is.na(x))==1)
+  parc2parc.discon = as.data.frame(parc2parc.discon[,!allnas])
   parc2parc.discon = cbind(ID, parc2parc.discon)
 
   output = list(parc.damage = parc.damage, tract.discon = tract.discon,

@@ -18,7 +18,7 @@
 #'
 #' @export
 
-get_patient_sspl<-function(cfg, cores=1){
+get_patient_sspl<-function(cfg, cores=1, verbose=T){
   if(is.null(cfg$pat_id)){
 
     at.path=paste0(cfg[[1]]$out_path,"/Atlas")
@@ -26,7 +26,7 @@ get_patient_sspl<-function(cfg, cores=1){
       stop('Atlas folder does not exist in output directory; cannot compute changes in SSPLs until atlas SSPL matrix has been created. Please create atlas SSPL matrix and retry.');
     }
     cat('Computing patient SSPL matrices\n')
-    out = pbmclapply(cfg, get_patient_sspl, mc.cores=cores)
+    out = pbmclapply(cfg, get_patient_sspl, verbose=F, mc.cores=cores)
     cat('Finished creating patient SSPL and delta-SSPL matrices\n')
 
   }else{
@@ -109,7 +109,7 @@ get_patient_sspl<-function(cfg, cores=1){
     C = cbind(NodePos, NodeColor, NodeSize, NodeLabel)
     write(t(C), OutputFile, sep="\t")
 
-    cat('Finished creating patient SSPL and delta-SSPL matrices\n')
+    if(verbose==T){cat('Finished creating patient SSPL and delta-SSPL matrices\n')}
 
     ### output direct and indirect structural disconnection matrices
     idc_matrix_mask = (delta_sspl_matrix > 0) - (pct_sdc_matrix > 0)

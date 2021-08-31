@@ -14,11 +14,11 @@
 #'
 #' @export
 
-get_parcel_damage<-function(cfg, cores=1){
+get_parcel_damage<-function(cfg, cores=1, verbose=T){
   if(is.null(cfg$pat_id)){
 
     cat('Computing parcel damage measures.\n')
-    out = pbmclapply(cfg, get_parcel_damage, mc.cores=cores)
+    out = pbmclapply(cfg, get_parcel_damage, verbose=F, mc.cores=cores)
     cat('Finished computing parcel damage measures')
 
   }else{
@@ -38,7 +38,7 @@ get_parcel_damage<-function(cfg, cores=1){
     if(!identical(dim(lesions),dim(parcels))){
       stop('Lesion and parcel volumes have different dimensions. Please make sure that both volumes are in the same space and have identical dimensions.')
     }else{
-      cat('Computing parcel damage measures.\n')
+      if(verbose==T){cat('Computing parcel damage measures.\n')}
     }
 
     # Get parcel damage measures
@@ -49,7 +49,7 @@ get_parcel_damage<-function(cfg, cores=1){
     for(i in 1:num_parcels){
       # loop through parcels
 
-      cat('Progress:',i,'of',num_parcels,'parcels evaluated\r')
+      if(verbose==T){cat('Progress:',i,'of',num_parcels,'parcels evaluated\r')}
       pcd_vect[i] = mean(lesions[parcels==i])*100 # get percent of parcel damaged
       pcd_vol[parcels==i] = pcd_vect[i] # put into volume
     }
@@ -58,7 +58,7 @@ get_parcel_damage<-function(cfg, cores=1){
                         ParcelGroup=cfg$node_group,
                         PercentDamage=pcd_vect)
 
-    cat('Finished computing parcel damage measures')
+    if(verbose==T){cat('Finished computing parcel damage measures')}
 
     # save parcel damage measures
 

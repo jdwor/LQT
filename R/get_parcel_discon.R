@@ -22,7 +22,7 @@
 #'
 #' @export
 
-get_parcel_discon<-function(cfg, cores=1){
+get_parcel_discon<-function(cfg, cores=1, verbose=T){
   if(is.null(cfg$pat_id)){
 
     at.path=paste0(cfg[[1]]$out_path,"/Atlas")
@@ -30,7 +30,7 @@ get_parcel_discon<-function(cfg, cores=1){
       stop('Atlas folder does not exist in output directory; cannot convert streamline counts or TDI values to % disconnection. Please run get_parcel_atlas before attempting to create patient disconnection measures.');
     }
     cat('Computing parcel disconnection measures\n')
-    out = pbmclapply(cfg, get_parcel_discon, mc.cores=cores)
+    out = pbmclapply(cfg, get_parcel_discon, verbose=F, mc.cores=cores)
     cat('Finished computing parcel disconnection measures.\n')
 
   }else{
@@ -52,7 +52,7 @@ get_parcel_discon<-function(cfg, cores=1){
       dir.create(dm.path)
     }
 
-    out_file = paste0(pd.path)
+    out_file = pd.path
 
     # create disconnection matrix, .trk fle, and TDI map
     out=tryCatch({
@@ -208,7 +208,7 @@ get_parcel_discon<-function(cfg, cores=1){
     if(length(trk_file)>0){file.remove(paste0(pd.path,"/",trk_file))}
     file.remove(paste0(pd.path,"/",con_file))
 
-    cat('Finished computing parcel disconnection measures.\n')
+    if(verbose==T){cat('Finished computing parcel disconnection measures.\n')}
   }
 
 }

@@ -14,11 +14,11 @@
 #'
 #' @export
 
-get_tract_discon<-function(cfg, cores=1){
+get_tract_discon<-function(cfg, cores=1, verbose=T){
   if(is.null(cfg$pat_id)){
 
     cat('Computing tract disconnection.\n')
-    out = pbmclapply(cfg, get_tract_discon, mc.cores=cores)
+    out = pbmclapply(cfg, get_tract_discon, verbose=F, mc.cores=cores)
     cat("Finished computing tract disconnection measures.")
 
   }else{
@@ -39,7 +39,7 @@ get_tract_discon<-function(cfg, cores=1){
       dir.create(td.path)
     }
 
-    cat('Computing tract disconnection.\n')
+    if(verbose==T){cat('Computing tract disconnection.\n')}
 
     num_tracts=length(my_tracts)
     for(i in 1:num_tracts){
@@ -79,7 +79,7 @@ get_tract_discon<-function(cfg, cores=1){
         close(fileConn)
       }
 
-      cat('Progress:',i,'of',num_tracts,'tracts evaluated\r')
+      if(verbose==T){cat('Progress:',i,'of',num_tracts,'tracts evaluated\r')}
     }
 
     #to_remove=list.files(td.path, pattern="\\.trk\\.gz$")
@@ -112,7 +112,7 @@ get_tract_discon<-function(cfg, cores=1){
                         Pathway = tract_pathways)
     write.csv(output,paste0(td.path,"/",cfg$pat_id,"_percent_discon_tracts.csv"))
 
-    cat("Finished computing tract disconnection measures.")
+    if(verbose==T){cat("Finished computing tract disconnection measures.")}
 
   }
 }
