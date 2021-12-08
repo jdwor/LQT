@@ -54,16 +54,26 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
     }else{
       stop("Specified path to dsi_studio ('dsi_path') does not exist.\n
            If it is already installed, please specify the correct path in the function call.\n
-           If not, please download the software at http://dsi-studio.labsolver.org/dsi-studio-download.")
+           If not, please download the software at http://dsi-studio.labsolver.org/dsi-studio-download.
+           For easiest operability of LQT, please download the 08/30/21 version of DSI_studio.")
     }
   }else{
-    checkdsi='/Applications/dsi_studio.app/Contents/MacOS/dsi_studio'
+    if(.Platform$OS.type=="unix"){
+      checkdsi=system.file("extdata","DSI_studio/dsi_studio.app/Contents/MacOS/dsi_studio",
+                           package="LQT")
+    }else if(.Platform$OS.type=="windows"){
+      checkdsi=system.file("extdata","DSI_studio/dsi_studio_64/dsi_studio.exe",
+                           package="LQT")
+    }else{
+      checkdsi="dsi_path not found"
+    }
     if(file.exists(checkdsi)){
       cfg$dsi_path=rep(checkdsi,num_subs)
     }else{
       stop("Cannot find path to dsi_studio.\n
            If it is already installed, please specify the correct path in the function call.\n
-           If not, please download the software at http://dsi-studio.labsolver.org/dsi-studio-download.")
+           If not, please download the software at http://dsi-studio.labsolver.org/dsi-studio-download.
+           For easiest operability of LQT, please download the 08/30/21 version of DSI_studio.")
     }
   }
 

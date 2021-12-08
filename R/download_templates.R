@@ -27,4 +27,17 @@ download_templates=function(){
   unzip(zipfile = paste0(extdata,"/Tractography_Atlas/All_Tracts.zip"),
         exdir = paste0(extdata,"/Tractography_Atlas/All_Tracts"))
   file.remove(paste0(extdata,"/Tractography_Atlas/All_Tracts.zip"))
+  if(.Platform$OS.type=="unix"){
+    download.file("https://figshare.com/ndownloader/files/31708106?private_link=c67b652f2056867a5648",
+                  destfile=paste0(extdata,"/DSI_studio.zip"),mode="wb")
+    unzip(zipfile = paste0(extdata,"/DSI_studio.zip"),
+          exdir = paste0(extdata,"/DSI_studio"))
+    file.remove(paste0(extdata,"/DSI_studio.zip"))
+  }else if(.Platform$OS.type=="windows"){
+    download.file("https://figshare.com/ndownloader/files/31708160?private_link=14b4549b8479c88a8343",
+                  destfile=paste0(extdata,"/DSI_studio.zip"),mode="wb")
+    unzip(zipfile = paste0(extdata,"/DSI_studio.zip"),
+          exdir = paste0(extdata,"/DSI_studio"))
+    file.remove(paste0(extdata,"/DSI_studio.zip"))
+  }
 }
