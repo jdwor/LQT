@@ -53,7 +53,7 @@ get_parcel_atlas<-function(cfg){
   netfile=paste0(at.path,"/",list.files(at.path,pattern="network_measures\\.txt$"))
   global=read.table(netfile,sep="\t")[1:27,]
   colnames(global)=c("Measure","Value")
-  local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
+  local=read.table(netfile,sep="\t",skip=27,header=T)[,-(length(node_label)+2)]
   colnames(local)[1]="Measure"
   colnames(local)[-1]=cfg$node_label
   file.remove(netfile)

@@ -80,6 +80,18 @@ create_cfg_object=function(pat_ids,lesion_paths,out_path,
   if(!is.null(parcel_path)){
     if(file.exists(parcel_path) & !grepl("extdata",parcel_path)){
       cfg$parcel_path=rep(parcel_path,num_subs)
+      if(is.null(node_label)){
+        warning("No node labels specified; nodes will be labeled numerically.")
+      }
+      if(is.null(node_group)){
+        warning("No node groups specified.")
+      }
+      if(is.null(parcel_coords)){
+        warning("No parcel coordinates specified; network plots will not be possible")
+      }
+      node_label = t$RegionName
+      node_group = t$NetworkID
+      parcel_coords = cbind(t$X, t$Y, t$Z)
     }else if(file.exists(parcel_path) & grepl("extdata",parcel_path)){
       cfg$parcel_path=rep(parcel_path,num_subs)
       t=read.csv(gsub(".nii.gz",".csv",parcel_path[1]),header=T)

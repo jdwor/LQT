@@ -96,7 +96,7 @@ get_parcel_discon<-function(cfg, cores=1, verbose=T){
     netfile=paste0(pd.path,"/",list.files(pd.path,pattern="network_measures\\.txt$"))
     global=read.table(netfile,sep="\t")[1:27,]
     colnames(global)=c("Measure","Value")
-    local=read.table(netfile,sep="\t",skip=27,header=T)[,-137]
+    local=read.table(netfile,sep="\t",skip=27,header=T)[,-(length(node_label)+2)]
     colnames(local)[1]="Measure"
     colnames(local)[-1]=cfg$node_label
     file.remove(netfile)
