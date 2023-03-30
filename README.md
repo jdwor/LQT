@@ -3,6 +3,8 @@
 
 # Lesion Quantification Toolkit (LQT) <img src="ims/icon256.png" height="150px" width="150px" align="right" />
 
+*Note: This package is no longer being actively maintained! I will still try to answer questions, but as dependencies get updated some things might get buggy as time passes. I recommend looking into Amy Kuceyeski's NeMo tool instead (https://github.com/kjamison/nemo)*
+
 `LQT` is an R implementation of the lesion quantification toolkit, based
 on the paper [“Lesion Quantification Toolkit: A MATLAB software tool for
 estimating grey matter damage and white matter disconnections in
