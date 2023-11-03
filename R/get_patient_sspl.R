@@ -129,6 +129,26 @@ get_patient_sspl<-function(cfg, cores=1, verbose=T){
     save(sspl_matrix,delta_sspl_matrix,idc_matrix,node_label,node_group,
          file=paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_SSPL_matrices.RData"))
 
+    ### save parcel-level sspl averages
+    
+    parc.sspl=data.frame(Parcel=cfg$node_label,ParcelGroup=cfg$node_group)
+    parc.sspl$Parcel=gsub(" \\(Right\\)","_R",parc.sspl$Parcel)
+    parc.sspl$Parcel=gsub(" \\(Left\\)","_L",parc.sspl$Parcel)
+    parc.sspl$Parcel=gsub("Lenticular nucleus, p",
+                         "Lent_Nuc_P",parc.sspl$Parcel)
+    parc.sspl$Parcel=gsub("RH_","R_",parc.sspl$Parcel)
+    parc.sspl$Parcel=gsub("LH_","L_",parc.sspl$Parcel)
+
+    ps.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_SSPL")
+    load(paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,
+                "_SSPL_matrices.RData"))
+    perc_d_sspl=delta_sspl_matrix/(sspl_matrix-delta_sspl_matrix)
+    perc_d_sspl[is.na(perc_d_sspl)]=0
+
+    parc.sspl$ParcelAvgSSPL=apply(perc_d_sspl,1,mean)
+    write.csv(parc.sspl,paste0(ps.path,"/",cfg$pat_id,"_",
+                                 cfg$file_suffix,"_parcel_average_sspl.csv")
+
     # write out .edge file
     write(round(t(idc_matrix),4),
           paste0(ps.path,"/",cfg$pat_id,"_",cfg$file_suffix,
