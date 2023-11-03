@@ -147,7 +147,7 @@ get_patient_sspl<-function(cfg, cores=1, verbose=T){
 
     parc.sspl$ParcelAvgSSPL=apply(perc_d_sspl,1,mean)
     write.csv(parc.sspl,paste0(ps.path,"/",cfg$pat_id,"_",
-                                 cfg$file_suffix,"_parcel_average_sspl.csv")
+                                 cfg$file_suffix,"_parcel_average_sspl.csv"))
 
     # write out .edge file
     write(round(t(idc_matrix),4),
