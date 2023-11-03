@@ -148,7 +148,7 @@ get_parcel_discon<-function(cfg, cores=1, verbose=T){
 
     parc.discon$ParcelDiscon=apply(pat_sdc,1,sum)/apply(at_con,1,sum)
     write.csv(parc.discon,paste0(pd.path,"/",cfg$pat_id,"_",
-                                 cfg$file_suffix,"_parcel_overall_discon.csv")
+                                 cfg$file_suffix,"_parcel_overall_discon.csv"))
 
     ### output .node and .edge files for external viewers (e.g. MRIcroGL)
 
