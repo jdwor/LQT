@@ -127,6 +127,29 @@ get_parcel_discon<-function(cfg, cores=1, verbose=T){
     fname=paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,"_percent_parcel_mats.RData")
     save(pct_sdc_matrix, pct_spared_sc_matrix, file=fname)
 
+    ### save parcel-level disconnection percentages
+    
+    parc.discon=data.frame(Parcel=cfg$node_label,ParcelGroup=cfg$node_group)
+    parc.discon$Parcel=gsub(" \\(Right\\)","_R",parc.discon$Parcel)
+    parc.discon$Parcel=gsub(" \\(Left\\)","_L",parc.discon$Parcel)
+    parc.discon$Parcel=gsub("Lenticular nucleus, p",
+                         "Lent_Nuc_P",parc.discon$Parcel)
+    parc.discon$Parcel=gsub("RH_","R_",parc.discon$Parcel)
+    parc.discon$Parcel=gsub("LH_","L_",parc.discon$Parcel)
+
+    pd.path=paste0(cfg$out_path,"/",cfg$pat_id,"/Parcel_Disconnection")
+    load(paste0(pd.path,"/",cfg$pat_id,"_",cfg$file_suffix,
+                "_percent_parcel_mats.RData"))
+    at.path=paste0(cfg$out_path,"/Atlas")
+    load(paste0(at.path,'/atlas_',cfg$file_suffix,'_connectivity.RData'))
+
+    at_con=connectivity; rm(connectivity)
+    pat_sdc=at_con*pct_sdc_matrix/100
+
+    parc.discon$ParcelDiscon=apply(pat_sdc,1,sum)/apply(at_con,1,sum)
+    write.csv(parc.discon,paste0(pd.path,"/",cfg$pat_id,"_",
+                                 cfg$file_suffix,"_parcel_overall_discon.csv")
+
     ### output .node and .edge files for external viewers (e.g. MRIcroGL)
 
     # get parcel coordinates if not supplied
