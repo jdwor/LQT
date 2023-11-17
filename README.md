@@ -189,5 +189,5 @@ list2env(data, .GlobalEnv); rm(data)
 </p>
 
 There you have it\! Good luck with your research, and don’t hesitate to
-email me at jordan.dworkin \[at\] nyspi \[dot\] columbia \[dot\] edu if
+email me at jordandworkin \[at\] gmail \[dot\] com if
 you have any questions about the package.
